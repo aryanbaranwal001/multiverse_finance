@@ -6,243 +6,289 @@ export interface Market {
   categories: string[];
   iconName: string;
   isBookmarked?: boolean;
+  yesPercentage?: number;
+  resolutionDate?: string;
 }
 
 export const markets: Market[] = [
   // Trending Markets
   {
     id: "1",
-    title: "Will Bitcoin reach $100,000 by end of 2024?",
-    description: "Prediction market on Bitcoin's price trajectory considering current market conditions, institutional adoption, and regulatory developments.",
-    volume: 2500000,
-    categories: ["trending", "crypto"],
-    iconName: "bitcoin.svg"
+    title: "Will AI cause more job losses than job creation in 2025?",
+    description: "Based on global surveys showing 65% fear AI job losses vs 43% expecting job creation. Market predicts net impact of AI on employment.",
+    volume: 4200000,
+    categories: ["trending", "tech", "economy"],
+    iconName: "ai-jobs.svg",
+    yesPercentage: 62,
+    resolutionDate: "Dec 31, 2025"
   },
   {
     id: "2",
-    title: "US Presidential Election 2024 Winner",
-    description: "Betting market on the outcome of the 2024 United States Presidential Election with real-time odds based on polling data and campaign performance.",
-    volume: 15000000,
-    categories: ["trending", "politics", "elections"],
-    iconName: "election.svg"
+    title: "Will Trump and Putin hold a summit in Alaska in 2025?",
+    description: "Prediction market on potential diplomatic meeting between US and Russian leaders, considering current geopolitical tensions and expert analysis.",
+    volume: 3800000,
+    categories: ["trending", "politics", "geopolitics"],
+    iconName: "trump-putin.svg",
+    yesPercentage: 35,
+    resolutionDate: "Dec 31, 2025"
   },
   {
     id: "3",
-    title: "Will OpenAI release GPT-5 in 2024?",
-    description: "Market predicting the release timeline of OpenAI's next major language model, considering development cycles and company announcements.",
-    volume: 800000,
+    title: "Will virtual world engagement increase significantly in 2025?",
+    description: "59% globally expect increased virtual world engagement. Market predicts mainstream adoption of metaverse platforms and virtual experiences.",
+    volume: 2900000,
     categories: ["trending", "tech"],
-    iconName: "ai.svg"
+    iconName: "virtual-world.svg",
+    yesPercentage: 71,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "22",
-    title: "Apple Vision Pro Market Adoption Rate",
-    description: "Prediction market on Apple Vision Pro achieving 1 million units sold by end of 2024, considering pricing and consumer adoption patterns.",
-    volume: 1900000,
-    categories: ["trending", "tech"],
-    iconName: "apple.svg"
+    id: "4",
+    title: "Will Germany's economy recover from 2-year contraction in 2025?",
+    description: "Germany's economy contracted for second consecutive year in 2024. Market predicts economic recovery amid political changes and EU challenges.",
+    volume: 5100000,
+    categories: ["trending", "economy", "world"],
+    iconName: "germany-economy.svg",
+    yesPercentage: 58,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "23",
-    title: "Global Inflation Peak in 2024",
-    description: "Market predicting when global inflation rates will reach their peak in 2024, analyzing central bank policies and economic indicators.",
-    volume: 3100000,
-    categories: ["trending", "economy"],
-    iconName: "inflation.svg"
-  },
-  {
-    id: "24",
-    title: "SpaceX Mars Mission Timeline",
-    description: "Betting market on SpaceX announcing a crewed Mars mission date within the next 2 years, based on current development progress.",
-    volume: 2700000,
+    id: "5",
+    title: "Will China maintain 77% confidence in AI job creation through 2025?",
+    description: "China leads globally with 77% believing AI will create jobs. Market predicts if this optimism sustains amid global AI developments.",
+    volume: 3300000,
     categories: ["trending", "tech", "world"],
-    iconName: "spacex.svg"
+    iconName: "china-ai.svg",
+    yesPercentage: 68,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "25",
-    title: "FIFA World Cup 2026 Host Cities",
-    description: "Prediction market on which additional cities will be selected as FIFA World Cup 2026 venues beyond the already announced locations.",
-    volume: 1600000,
-    categories: ["trending", "sports", "world"],
-    iconName: "fifa.svg"
+    id: "6",
+    title: "Will personal data leaks increase in 2025?",
+    description: "57% globally expect personal data leaks in 2025. Market predicts cybersecurity incidents amid increasing digital engagement and AI adoption.",
+    volume: 2700000,
+    categories: ["trending", "tech"],
+    iconName: "data-breach.svg",
+    yesPercentage: 74,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "26",
-    title: "Cryptocurrency Market Cap Milestone",
-    description: "Market predicting if the total cryptocurrency market cap will exceed $3 trillion by the end of 2024, considering adoption and regulation.",
-    volume: 4200000,
-    categories: ["trending", "crypto", "economy"],
-    iconName: "crypto.svg"
+    id: "7",
+    title: "Will stricter tech company regulations be implemented in 2025?",
+    description: "47% anticipate stricter regulations for large tech companies, up from 38% in 2021. Market predicts major regulatory changes.",
+    volume: 4600000,
+    categories: ["trending", "tech", "politics"],
+    iconName: "tech-regulation.svg",
+    yesPercentage: 65,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "27",
-    title: "Climate Change COP29 Outcomes",
-    description: "Prediction market on key outcomes from the COP29 climate summit, including new emission reduction commitments and funding agreements.",
-    volume: 2300000,
-    categories: ["trending", "world", "geopolitics"],
-    iconName: "climate.svg"
+    id: "8",
+    title: "Will smartphone bans in schools become widespread in 2025?",
+    description: "44% globally predict smartphone bans in schools, led by Netherlands at 74%. Market predicts educational policy changes worldwide.",
+    volume: 1800000,
+    categories: ["trending", "tech", "world"],
+    iconName: "phone-ban.svg",
+    yesPercentage: 52,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // New Markets
   {
-    id: "4",
-    title: "Tesla Q4 2024 Earnings Beat Expectations?",
-    description: "Prediction on whether Tesla will exceed analyst expectations for Q4 2024 earnings, factoring in production numbers and market demand.",
-    volume: 1200000,
-    categories: ["new", "earnings", "tech"],
-    iconName: "tesla.svg"
+    id: "9",
+    title: "Will global economic optimism reach 55% by mid-2025?",
+    description: "Currently at 51%, up from 46% low in 2022. Market predicts if economic confidence will continue recovering toward pre-pandemic levels.",
+    volume: 3900000,
+    categories: ["new", "economy"],
+    iconName: "economic-optimism.svg",
+    yesPercentage: 48,
+    resolutionDate: "Jun 30, 2025"
   },
   {
-    id: "5",
-    title: "Will there be a recession in 2025?",
-    description: "Economic prediction market analyzing various indicators including inflation, employment rates, and central bank policies.",
-    volume: 3500000,
-    categories: ["new", "economy"],
-    iconName: "recession.svg"
+    id: "10",
+    title: "Will Indonesia maintain highest global optimism in 2025?",
+    description: "Indonesia leads with 90% optimism for 2025 vs Japan's 38%. Market predicts if emerging markets will continue outpacing developed nations.",
+    volume: 2200000,
+    categories: ["new", "world", "economy"],
+    iconName: "indonesia-optimism.svg",
+    yesPercentage: 76,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // Politics Markets
   {
-    id: "6",
-    title: "UK General Election Date Prediction",
-    description: "Market predicting when the next UK General Election will be called, considering political developments and parliamentary dynamics.",
-    volume: 950000,
-    categories: ["politics", "elections"],
-    iconName: "uk-election.svg"
+    id: "11",
+    title: "Will Ukraine survive as independent nation through 2025?",
+    description: "Critical geopolitical market assessing Ukraine's sovereignty amid ongoing conflict and international support dynamics.",
+    volume: 8500000,
+    categories: ["politics", "geopolitics", "world"],
+    iconName: "ukraine-survival.svg",
+    yesPercentage: 78,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "7",
-    title: "EU Parliament Composition 2024",
-    description: "Prediction market on the political composition of the European Parliament following the 2024 elections.",
-    volume: 1800000,
-    categories: ["politics", "elections", "world"],
-    iconName: "eu-parliament.svg"
+    id: "12",
+    title: "Will tariff concerns affect Japan's political stability in 2025?",
+    description: "Market predicts impact of trade policies on Japanese politics and security relationships, considering economic pressures.",
+    volume: 2800000,
+    categories: ["politics", "economy", "world"],
+    iconName: "japan-tariffs.svg",
+    yesPercentage: 42,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // Sports Markets
   {
-    id: "8",
-    title: "FIFA World Cup 2026 Winner",
-    description: "Long-term betting market on which national team will win the 2026 FIFA World Cup, considering current team strengths and development.",
-    volume: 5200000,
+    id: "13",
+    title: "Will 2026 FIFA World Cup preparations stay on schedule?",
+    description: "Market predicts if infrastructure and organizational preparations for the expanded 48-team tournament will meet deadlines.",
+    volume: 3400000,
     categories: ["sports", "world"],
-    iconName: "world-cup.svg"
+    iconName: "world-cup-2026.svg",
+    yesPercentage: 72,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "9",
-    title: "NBA Championship 2024-25 Season",
-    description: "Prediction market for the NBA Championship winner of the 2024-25 season, updated with team performance and player trades.",
-    volume: 4100000,
-    categories: ["sports"],
-    iconName: "nba.svg"
+    id: "14",
+    title: "Will space exploration achievements exceed 2024 records?",
+    description: "2024 saw lunar landings, Mars samples, and SpaceX innovations. Market predicts if 2025 will surpass these milestones.",
+    volume: 2600000,
+    categories: ["sports", "tech", "world"],
+    iconName: "space-race.svg",
+    yesPercentage: 67,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // Crypto Markets
   {
-    id: "10",
-    title: "Ethereum 2.0 Staking Rewards Rate",
-    description: "Market predicting the average staking rewards rate for Ethereum 2.0 validators over the next 12 months.",
-    volume: 1600000,
-    categories: ["crypto", "tech"],
-    iconName: "ethereum.svg"
+    id: "15",
+    title: "Will cryptocurrency adoption drive economic recovery in emerging markets?",
+    description: "Market predicts crypto's role in economic growth for developing nations, considering regulatory changes and adoption rates.",
+    volume: 4800000,
+    categories: ["crypto", "economy", "world"],
+    iconName: "crypto-emerging.svg",
+    yesPercentage: 59,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "11",
-    title: "Next Crypto Bull Run Timeline",
-    description: "Prediction market on when the next major cryptocurrency bull run will begin, based on market cycles and adoption metrics.",
-    volume: 2200000,
+    id: "16",
+    title: "Will Bitcoin institutional adoption accelerate in 2025?",
+    description: "Prediction on corporate and government Bitcoin adoption following recent regulatory clarity and market maturation.",
+    volume: 6200000,
     categories: ["crypto", "economy"],
-    iconName: "bull-run.svg"
+    iconName: "bitcoin-institutional.svg",
+    yesPercentage: 73,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // Earnings Markets
   {
-    id: "12",
-    title: "Apple Q1 2025 Revenue Forecast",
-    description: "Market predicting Apple's Q1 2025 revenue figures, considering iPhone sales, services growth, and market conditions.",
-    volume: 1800000,
+    id: "17",
+    title: "Will AI companies outperform traditional tech stocks in 2025?",
+    description: "Market comparing AI-focused companies' performance against established tech giants amid AI revolution and market dynamics.",
+    volume: 5700000,
     categories: ["earnings", "tech"],
-    iconName: "apple-earnings.svg"
+    iconName: "ai-stocks.svg",
+    yesPercentage: 68,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "13",
-    title: "Amazon AWS Growth Rate 2024",
-    description: "Prediction on Amazon Web Services annual growth rate for 2024, factoring in cloud adoption and competition.",
-    volume: 1400000,
+    id: "18",
+    title: "Will quantum computing breakthroughs drive market valuations in 2025?",
+    description: "Prediction on quantum computing commercialization impact on tech sector valuations and investment flows.",
+    volume: 3100000,
     categories: ["earnings", "tech"],
-    iconName: "aws.svg"
+    iconName: "quantum-computing.svg",
+    yesPercentage: 45,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // Geopolitics Markets
   {
-    id: "14",
-    title: "China-Taiwan Relations Stability",
-    description: "Market assessing the likelihood of maintaining peaceful relations between China and Taiwan over the next 12 months.",
-    volume: 2800000,
+    id: "19",
+    title: "Will China-Taiwan tensions escalate beyond current levels in 2025?",
+    description: "Critical geopolitical market assessing probability of increased military or diplomatic tensions in Taiwan Strait region.",
+    volume: 7300000,
     categories: ["geopolitics", "world"],
-    iconName: "china-taiwan.svg"
+    iconName: "china-taiwan-tension.svg",
+    yesPercentage: 38,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "15",
-    title: "Russia-Ukraine Conflict Resolution",
-    description: "Prediction market on potential resolution timelines for the ongoing conflict, considering diplomatic efforts and military developments.",
-    volume: 4500000,
-    categories: ["geopolitics", "world"],
-    iconName: "ukraine-conflict.svg"
+    id: "20",
+    title: "Will Russia face significant internal political changes in 2025?",
+    description: "Market predicts potential domestic political shifts in Russia considering economic pressures and international isolation.",
+    volume: 6800000,
+    categories: ["geopolitics", "politics", "world"],
+    iconName: "russia-politics.svg",
+    yesPercentage: 31,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // Tech Markets
   {
-    id: "16",
-    title: "Apple Vision Pro Sales Target",
-    description: "Market predicting whether Apple will meet its Vision Pro sales targets for 2024, considering adoption rates and market reception.",
-    volume: 1100000,
+    id: "21",
+    title: "Will AGI (Artificial General Intelligence) be achieved by 2025?",
+    description: "Market predicts breakthrough in artificial general intelligence development by major AI research organizations.",
+    volume: 8900000,
     categories: ["tech"],
-    iconName: "vision-pro.svg"
+    iconName: "agi.svg",
+    yesPercentage: 23,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "17",
-    title: "Meta's Metaverse Investment ROI",
-    description: "Prediction on when Meta's metaverse investments will show positive returns, based on user adoption and revenue generation.",
-    volume: 900000,
+    id: "22",
+    title: "Will social media usage reduction trend continue in 2025?",
+    description: "37% globally intend to reduce social media usage. Market predicts if this digital wellness trend will accelerate.",
+    volume: 2400000,
     categories: ["tech"],
-    iconName: "meta.svg"
+    iconName: "social-media-reduction.svg",
+    yesPercentage: 56,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // World Markets
   {
-    id: "18",
-    title: "Global Climate Goals Achievement",
-    description: "Market predicting the likelihood of achieving key global climate targets set for 2030, considering current progress and policies.",
-    volume: 3200000,
-    categories: ["world", "geopolitics"],
-    iconName: "climate-goals.svg"
+    id: "23",
+    title: "Will climate change breakthrough technology emerge in 2025?",
+    description: "Only 32% believe breakthrough will halt climate change. Market predicts major technological advancement in climate solutions.",
+    volume: 5500000,
+    categories: ["world", "tech"],
+    iconName: "climate-breakthrough.svg",
+    yesPercentage: 34,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "19",
-    title: "Next Country to Join BRICS",
-    description: "Prediction market on which country will be the next to join the BRICS economic alliance, considering geopolitical alignments.",
-    volume: 1700000,
-    categories: ["world", "geopolitics", "economy"],
-    iconName: "brics.svg"
+    id: "24",
+    title: "Will global mental health improvements reach 70% by 2025?",
+    description: "69% expect mental health improvements in 2025. Market predicts if post-pandemic recovery will meet optimistic projections.",
+    volume: 3600000,
+    categories: ["world"],
+    iconName: "mental-health.svg",
+    yesPercentage: 71,
+    resolutionDate: "Dec 31, 2025"
   },
 
   // Economy Markets
   {
-    id: "20",
-    title: "Federal Reserve Interest Rate 2024",
-    description: "Market predicting the Federal Reserve's interest rate decisions throughout 2024, considering inflation and economic indicators.",
-    volume: 6200000,
-    categories: ["economy"],
-    iconName: "fed-rate.svg"
+    id: "25",
+    title: "Will global inflation return to pre-2020 levels by end of 2025?",
+    description: "Market predicts if central bank policies will successfully bring inflation back to historical norms across major economies.",
+    volume: 7800000,
+    categories: ["economy", "world"],
+    iconName: "inflation-control.svg",
+    yesPercentage: 54,
+    resolutionDate: "Dec 31, 2025"
   },
   {
-    id: "21",
-    title: "Global Inflation Peak Timing",
-    description: "Prediction on when global inflation rates will peak and begin to decline, analyzing various economic factors and central bank policies.",
-    volume: 2900000,
+    id: "26",
+    title: "Will emerging markets outperform developed economies in 2025?",
+    description: "Emerging markets show higher optimism (Indonesia 82%, China 79%). Market predicts relative economic performance.",
+    volume: 4900000,
     categories: ["economy", "world"],
-    iconName: "global-inflation.svg"
+    iconName: "emerging-markets.svg",
+    yesPercentage: 66,
+    resolutionDate: "Dec 31, 2025"
   }
 ];
 

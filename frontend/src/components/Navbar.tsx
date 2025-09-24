@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Search, Menu } from 'lucide-react';
 import { useThemeStore, getThemeClasses } from '@/store/themeStore';
 import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
@@ -12,23 +12,8 @@ const Navbar = () => {
   const { color, nextColor } = useThemeStore();
   const { isSearchOpen, setSearchOpen, searchQuery, setSearchQuery } = useAppStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const theme = getThemeClasses(color);
-
-  const handleMenuMouseEnter = () => {
-    if (menuTimeoutRef.current) {
-      clearTimeout(menuTimeoutRef.current);
-      menuTimeoutRef.current = null;
-    }
-    setIsMenuOpen(true);
-  };
-
-  const handleMenuMouseLeave = () => {
-    menuTimeoutRef.current = setTimeout(() => {
-      setIsMenuOpen(false);
-    }, 150); // 150ms delay
-  };
 
   return (
     <>
@@ -73,79 +58,69 @@ const Navbar = () => {
               <WalletSelector />
 
               {/* Hamburger Menu */}
-              <div
-                className="relative"
-                onMouseEnter={handleMenuMouseEnter}
-                onMouseLeave={handleMenuMouseLeave}
-              >
+              <div className="relative">
                 <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className={`p-2 rounded-lg ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/15 transition-all duration-200`}
                 >
                   <Menu className="w-5 h-5" />
                 </button>
                 
-                {/* Invisible bridge to prevent menu from closing */}
-                {isMenuOpen && (
-                  <div className="absolute top-full right-0 w-40 h-6 z-40" />
-                )}
-                
                 {/* Hamburger Menu Dropdown */}
-                <div className={`absolute top-full right-0 mt-6 w-40 ${theme.cardBg} border ${theme.border} rounded-lg shadow-lg z-50 transition-all duration-200 ease-out ${
-                  isMenuOpen 
-                    ? 'opacity-100 translate-y-0 scale-100' 
-                    : 'opacity-0 translate-y-[-10px] scale-95 pointer-events-none'
-                } sm:right-0 xs:right-[-12px]`}>
-                  <div className="py-2">
-                    <Link
-                      href="/dashboard"
-                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Dashboard
-                    </Link>
-                    <Link
-                      href="/politics"
-                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Politics
-                    </Link>
-                    <Link
-                      href="/sports"
-                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Sports
-                    </Link>
-                    <Link
-                      href="/crypto"
-                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Crypto
-                    </Link>
-                    <Link
-                      href="/economics"
-                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Economics
-                    </Link>
-                    <Link
-                      href="/entertainment"
-                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Entertainment
-                    </Link>
-                    <button
-                      onClick={nextColor}
-                      className={`w-full text-left px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
-                    >
-                      Theme: {color.charAt(0).toUpperCase() + color.slice(1)}
-                    </button>
+                {isMenuOpen && (
+                  <div className={`absolute top-full right-0 mt-2 w-40 ${theme.cardBg} border ${theme.border} rounded-lg shadow-lg z-50`}>
+                    <div className="py-2">
+                      <Link
+                        href="/dashboard"
+                        className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/politics"
+                        className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Politics
+                      </Link>
+                      <Link
+                        href="/sports"
+                        className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Sports
+                      </Link>
+                      <Link
+                        href="/crypto"
+                        className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Crypto
+                      </Link>
+                      <Link
+                        href="/economics"
+                        className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Economics
+                      </Link>
+                      <Link
+                        href="/entertainment"
+                        className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Entertainment
+                      </Link>
+                      <button
+                        onClick={nextColor}
+                        className={`w-full text-left px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                      >
+                        Theme: {color.charAt(0).toUpperCase() + color.slice(1)}
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

@@ -1,16 +1,52 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useThemeStore, getThemeClasses } from '@/store/themeStore';
+import { markets } from '@/data/markets';
+import MarketCard from '@/components/MarketCard';
 import Navbar from '@/components/Navbar';
 import CategoryNav from '@/components/CategoryNav';
-import MarketGrid from '@/components/MarketGrid';
 
 export default function Home() {
+  const { color } = useThemeStore();
+  const theme = getThemeClasses(color);
+  const [filteredMarkets, setFilteredMarkets] = useState(markets);
+
+  useEffect(() => {
+    const trendingMarkets = markets.filter(market => 
+      market.categories.includes('trending')
+    );
+    setFilteredMarkets(trendingMarkets);
+  }, []);
+
   return (
-    <div className="min-h-screen">
+    <div className={`min-h-screen ${theme.background} ${theme.text}`}>
       <Navbar />
       <CategoryNav />
       <main className="pt-16">
-        <MarketGrid />
+        <div className="px-12 sm:px-24 lg:px-48 py-8">
+          <div className="mb-8">
+            <h2 className={`text-2xl font-bold ${theme.text} mb-2`}>
+              Trending Markets
+            </h2>
+            <p className={`${theme.textSecondary}`}>
+              {filteredMarkets.length} market{filteredMarkets.length !== 1 ? 's' : ''} available
+            </p>
+          </div>
+
+          {filteredMarkets.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredMarkets.map((market) => (
+                <MarketCard key={market.id} market={market} />
+              ))}
+            </div>
+          ) : (
+            <div className={`text-center py-12 ${theme.textSecondary}`}>
+              <p className="text-lg mb-2">No markets found</p>
+              <p>Check back later for new markets in this category.</p>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

@@ -4,6 +4,7 @@ export interface Market {
   description: string;
   volume: number;
   categories: string[];
+  category?: string;
   iconName: string;
   isBookmarked?: boolean;
   yesPercentage?: number;

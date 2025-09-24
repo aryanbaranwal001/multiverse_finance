@@ -24,25 +24,30 @@ export default function GeopoliticsPage() {
       <Navbar />
       <CategoryNav />
       
-      <main className="container mx-auto px-4 py-8 pt-16">
-        <div className="mb-8">
-          <h1 className={`text-4xl font-bold mb-2 ${theme.primary}`}>Geopolitics Markets</h1>
-          <p className={`text-lg ${theme.textSecondary}`}>
-            Predict international relations and global political events
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredMarkets.map((market) => (
-            <MarketCard key={market.id} market={market} />
-          ))}
-        </div>
-
-        {filteredMarkets.length === 0 && (
-          <div className="text-center py-12">
-            <p className={`text-xl ${theme.textSecondary}`}>No geopolitics markets available at the moment.</p>
+      <main className="pt-16">
+        <div className="px-12 sm:px-24 lg:px-48 py-8">
+          <div className="mb-8">
+            <h2 className={`text-2xl font-bold ${theme.text} mb-2`}>
+              Geopolitics Markets
+            </h2>
+            <p className={`${theme.textSecondary}`}>
+              Predict international relations and global political events
+            </p>
           </div>
-        )}
+
+          {filteredMarkets.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredMarkets.map((market) => (
+                <MarketCard key={market.id} market={market} />
+              ))}
+            </div>
+          ) : (
+            <div className={`text-center py-12 ${theme.textSecondary}`}>
+              <p className="text-lg mb-2">No markets found</p>
+              <p>Check back later for new markets in this category.</p>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

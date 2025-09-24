@@ -297,30 +297,30 @@ const MarketDetailPage = () => {
             {/* Right Column - Trading Panel */}
             <div className="space-y-6">
               {/* Trading Panel */}
-              <div className={`p-6 ${theme.cardBg} rounded-xl border ${theme.border} shadow-sm`}>
-                <h3 className={`text-xl font-bold mb-6 ${theme.text}`}>Place Your Bet</h3>
+              <div className={`p-6 ${theme.cardBg} rounded-xl  ${theme.border} shadow-sm`}>
+                <h3 className={`text-xl font-bold mb-6 ${theme.text}`}>Trade</h3>
                 
                 <div className="space-y-4">
                   {/* Market Odds Display */}
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className={`p-4 rounded-lg border-2 ${theme.border} bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20`}>
+                    <div className={`p-4 rounded-lg  ${theme.border} bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20`}>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                           ${((market.yesPercentage || 50) / 100).toFixed(2)}
                         </div>
                         <div className="text-sm text-green-700 dark:text-green-300 font-medium">
-                          Yes • {market.yesPercentage || 50}%
+                          Yes | {market.yesPercentage || 50}%
                         </div>
                       </div>
                     </div>
                     
-                    <div className={`p-4 rounded-lg border-2 ${theme.border} bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20`}>
+                    <div className={`p-4 rounded-lg  ${theme.border} bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20`}>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                           ${(1 - (market.yesPercentage || 50) / 100).toFixed(2)}
                         </div>
                         <div className="text-sm text-red-700 dark:text-red-300 font-medium">
-                          No • {100 - (market.yesPercentage || 50)}%
+                          No | {100 - (market.yesPercentage || 50)}%
                         </div>
                       </div>
                     </div>
@@ -335,7 +335,6 @@ const MarketDetailPage = () => {
                       >
                         <div className="flex items-center justify-center gap-2">
                           <span>Buy Yes</span>
-                          <div className="w-2 h-2 bg-white rounded-full opacity-75 group-hover:opacity-100"></div>
                         </div>
                       </button>
                       
@@ -345,7 +344,6 @@ const MarketDetailPage = () => {
                       >
                         <div className="flex items-center justify-center gap-2">
                           <span>Buy No</span>
-                          <div className="w-2 h-2 bg-white rounded-full opacity-75 group-hover:opacity-100"></div>
                         </div>
                       </button>
                     </div>

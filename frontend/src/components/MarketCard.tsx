@@ -94,13 +94,13 @@ const MarketCard = ({ market }: MarketCardProps) => {
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={handleYesClick}
-              className="py-2.5 px-3 bg-green-500 text-white rounded-md font-medium hover:bg-green-600 transition-colors text-sm"
+              className="py-2.5 px-3 bg-green-600/80 text-white rounded-md font-medium hover:bg-green-600 transition-colors text-sm border border-green-500/30"
             >
               Yes
             </button>
             <button
               onClick={handleNoClick}
-              className="py-2.5 px-3 bg-red-500 text-white rounded-md font-medium hover:bg-red-600 transition-colors text-sm"
+              className="py-2.5 px-3 bg-red-600/80 text-white rounded-md font-medium hover:bg-red-600 transition-colors text-sm border border-red-500/30"
             >
               No
             </button>

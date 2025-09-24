@@ -296,146 +296,183 @@ const MarketDetailPage = () => {
 
             {/* Right Column - Trading Panel */}
             <div className="space-y-6">
-              {/* Trading Buttons */}
-              <div className="p-6 bg-white rounded-lg border border-gray-300">
-                <h3 className="text-xl font-semibold mb-6">Trade</h3>
+              {/* Trading Panel */}
+              <div className={`p-6 ${theme.cardBg} rounded-xl border ${theme.border} shadow-sm`}>
+                <h3 className={`text-xl font-bold mb-6 ${theme.text}`}>Place Your Bet</h3>
                 
-                {!showYesBuy && !showNoBuy ? (
-                  /* Initial Side-by-Side Buttons */
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    <button
-                      onClick={handleYesClick}
-                      className="py-2.5 px-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors text-sm"
-                    >
-                      Yes
-                    </button>
-                    <button
-                      onClick={handleNoClick}
-                      className="py-2.5 px-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors text-sm"
-                    >
-                      No
-                    </button>
+                <div className="space-y-4">
+                  {/* Market Odds Display */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className={`p-4 rounded-lg border-2 ${theme.border} bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20`}>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                          ${((market.yesPercentage || 50) / 100).toFixed(2)}
+                        </div>
+                        <div className="text-sm text-green-700 dark:text-green-300 font-medium">
+                          Yes • {market.yesPercentage || 50}%
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className={`p-4 rounded-lg border-2 ${theme.border} bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20`}>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+                          ${(1 - (market.yesPercentage || 50) / 100).toFixed(2)}
+                        </div>
+                        <div className="text-sm text-red-700 dark:text-red-300 font-medium">
+                          No • {100 - (market.yesPercentage || 50)}%
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  /* Expanded Buy Interface */
-                  <div className="space-y-4">
-                    {showYesBuy && (
-                      <div className="bg-gray-900 rounded-lg border border-gray-700 p-4">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-semibold text-green-400">Buy Yes</h4>
+
+                  {/* Trade Buttons */}
+                  {!showYesBuy && !showNoBuy ? (
+                    <div className="grid grid-cols-2 gap-4">
+                      <button
+                        onClick={handleYesClick}
+                        className="group relative py-4 px-6 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <span>Buy Yes</span>
+                          <div className="w-2 h-2 bg-white rounded-full opacity-75 group-hover:opacity-100"></div>
+                        </div>
+                      </button>
+                      
+                      <button
+                        onClick={handleNoClick}
+                        className="group relative py-4 px-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <span>Buy No</span>
+                          <div className="w-2 h-2 bg-white rounded-full opacity-75 group-hover:opacity-100"></div>
+                        </div>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {showYesBuy && (
+                        <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-xl border-2 border-green-200 dark:border-green-700 p-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-xl font-bold text-green-700 dark:text-green-300">Buy Yes Shares</h4>
                             <button
                               onClick={() => setShowYesBuy(false)}
-                              className="text-gray-400 hover:text-white"
+                              className="p-2 hover:bg-green-200 dark:hover:bg-green-800 rounded-lg transition-colors"
                             >
-                              <X className="w-4 h-4" />
+                              <X className="w-5 h-5 text-green-600 dark:text-green-400" />
                             </button>
                           </div>
                           
-                          {/* Amount Input */}
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium text-green-400">Amount</label>
-                            <div className="relative">
-                              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400 font-medium">$</span>
-                              <input
-                                type="number"
-                                placeholder="10"
-                                value={yesAmount}
-                                onChange={(e) => setYesAmount(e.target.value)}
-                                className="w-full pl-8 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-white placeholder-gray-400"
-                              />
+                          <div className="space-y-4">
+                            <div>
+                              <label className="block text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
+                                Investment Amount
+                              </label>
+                              <div className="relative">
+                                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 dark:text-green-400 font-bold text-lg">$</span>
+                                <input
+                                  type="number"
+                                  placeholder="100"
+                                  value={yesAmount}
+                                  onChange={(e) => setYesAmount(e.target.value)}
+                                  className="w-full pl-10 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-green-300 dark:border-green-600 rounded-xl outline-none focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 focus:border-green-500 text-lg font-semibold text-gray-900 dark:text-white placeholder-green-400"
+                                />
+                              </div>
                             </div>
-                          </div>
-                          
-                          {/* Potential Winnings */}
-                          {yesAmount && (
-                            <div className="text-sm text-green-300">
-                              To win <span className="font-semibold text-green-400">${(parseFloat(yesAmount) * (100 / (market.yesPercentage || 50)) - parseFloat(yesAmount)).toFixed(2)}</span>
+                            
+                            {yesAmount && (
+                              <div className="p-4 bg-green-100 dark:bg-green-800/50 rounded-lg border border-green-200 dark:border-green-700">
+                                <div className="text-sm text-green-700 dark:text-green-300 mb-1">Potential Profit</div>
+                                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                                  ${(parseFloat(yesAmount) * (100 / (market.yesPercentage || 50)) - parseFloat(yesAmount)).toFixed(2)}
+                                </div>
+                              </div>
+                            )}
+                            
+                            <div className="flex gap-3 pt-2">
+                              <button
+                                onClick={() => handleBuy('yes')}
+                                disabled={!yesAmount}
+                                className="flex-1 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl font-bold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105"
+                              >
+                                Confirm Purchase
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setShowYesBuy(false);
+                                  setYesAmount('');
+                                }}
+                                className="px-6 py-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                              >
+                                Cancel
+                              </button>
                             </div>
-                          )}
-                          
-                          {/* Action Buttons */}
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleBuy('yes')}
-                              disabled={!yesAmount}
-                              className="flex-1 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              Buy Yes
-                            </button>
-                            <button
-                              onClick={() => {
-                                setShowYesBuy(false);
-                                setYesAmount('');
-                              }}
-                              className="px-4 py-3 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600 transition-colors"
-                            >
-                              Cancel
-                            </button>
                           </div>
                         </div>
-                      </div>
-                    )}
-                    
-                    {showNoBuy && (
-                      <div className="bg-gray-900 rounded-lg border border-gray-700 p-4">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-semibold text-red-400">Buy No</h4>
+                      )}
+                      
+                      {showNoBuy && (
+                        <div className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 rounded-xl border-2 border-red-200 dark:border-red-700 p-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-xl font-bold text-red-700 dark:text-red-300">Buy No Shares</h4>
                             <button
                               onClick={() => setShowNoBuy(false)}
-                              className="text-gray-400 hover:text-white"
+                              className="p-2 hover:bg-red-200 dark:hover:bg-red-800 rounded-lg transition-colors"
                             >
-                              <X className="w-4 h-4" />
+                              <X className="w-5 h-5 text-red-600 dark:text-red-400" />
                             </button>
                           </div>
                           
-                          {/* Amount Input */}
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium text-red-400">Amount</label>
-                            <div className="relative">
-                              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-400 font-medium">$</span>
-                              <input
-                                type="number"
-                                placeholder="10"
-                                value={noAmount}
-                                onChange={(e) => setNoAmount(e.target.value)}
-                                className="w-full pl-8 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-white placeholder-gray-400"
-                              />
+                          <div className="space-y-4">
+                            <div>
+                              <label className="block text-sm font-semibold text-red-700 dark:text-red-300 mb-2">
+                                Investment Amount
+                              </label>
+                              <div className="relative">
+                                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-red-600 dark:text-red-400 font-bold text-lg">$</span>
+                                <input
+                                  type="number"
+                                  placeholder="100"
+                                  value={noAmount}
+                                  onChange={(e) => setNoAmount(e.target.value)}
+                                  className="w-full pl-10 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-red-300 dark:border-red-600 rounded-xl outline-none focus:ring-4 focus:ring-red-200 dark:focus:ring-red-800 focus:border-red-500 text-lg font-semibold text-gray-900 dark:text-white placeholder-red-400"
+                                />
+                              </div>
                             </div>
-                          </div>
-                          
-                          {/* Potential Winnings */}
-                          {noAmount && (
-                            <div className="text-sm text-red-300">
-                              To win <span className="font-semibold text-red-400">${(parseFloat(noAmount) * (100 / (100 - (market.yesPercentage || 50))) - parseFloat(noAmount)).toFixed(2)}</span>
+                            
+                            {noAmount && (
+                              <div className="p-4 bg-red-100 dark:bg-red-800/50 rounded-lg border border-red-200 dark:border-red-700">
+                                <div className="text-sm text-red-700 dark:text-red-300 mb-1">Potential Profit</div>
+                                <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+                                  ${(parseFloat(noAmount) * (100 / (100 - (market.yesPercentage || 50))) - parseFloat(noAmount)).toFixed(2)}
+                                </div>
+                              </div>
+                            )}
+                            
+                            <div className="flex gap-3 pt-2">
+                              <button
+                                onClick={() => handleBuy('no')}
+                                disabled={!noAmount}
+                                className="flex-1 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-bold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105"
+                              >
+                                Confirm Purchase
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setShowNoBuy(false);
+                                  setNoAmount('');
+                                }}
+                                className="px-6 py-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                              >
+                                Cancel
+                              </button>
                             </div>
-                          )}
-                          
-                          {/* Action Buttons */}
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleBuy('no')}
-                              disabled={!noAmount}
-                              className="flex-1 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              Buy No
-                            </button>
-                            <button
-                              onClick={() => {
-                                setShowNoBuy(false);
-                                setNoAmount('');
-                              }}
-                              className="px-4 py-3 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600 transition-colors"
-                            >
-                              Cancel
-                            </button>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Market Info */}

@@ -15,7 +15,7 @@ export const markets: Market[] = [
   {
     id: "1",
     title: "Will AI cause more job losses than job creation in 2025?",
-    description: "Based on global surveys showing 65% fear AI job losses vs 43% expecting job creation. Market predicts net impact of AI on employment.",
+    description: "Artificial intelligence adoption accelerates across industries, with automation affecting traditional roles while creating new opportunities in AI development, data science, and human-AI collaboration fields.",
     volume: 4200000,
     categories: ["trending", "tech", "economy"],
     iconName: "ai-jobs.svg",
@@ -25,7 +25,7 @@ export const markets: Market[] = [
   {
     id: "2",
     title: "Will Trump and Putin hold a summit in Alaska in 2025?",
-    description: "Prediction market on potential diplomatic meeting between US and Russian leaders, considering current geopolitical tensions and expert analysis.",
+    description: "Diplomatic relations between the United States and Russia remain strained amid ongoing geopolitical tensions, with Alaska's strategic location making it a potential neutral venue for high-level diplomatic engagement.",
     volume: 3800000,
     categories: ["trending", "politics", "geopolitics"],
     iconName: "trump-putin.svg",
@@ -35,7 +35,7 @@ export const markets: Market[] = [
   {
     id: "3",
     title: "Will virtual world engagement increase significantly in 2025?",
-    description: "59% globally expect increased virtual world engagement. Market predicts mainstream adoption of metaverse platforms and virtual experiences.",
+    description: "Virtual reality and metaverse technologies continue evolving with improved hardware, social platforms, and enterprise applications driving adoption across gaming, education, and remote collaboration sectors.",
     volume: 2900000,
     categories: ["trending", "tech"],
     iconName: "virtual-world.svg",
@@ -45,7 +45,7 @@ export const markets: Market[] = [
   {
     id: "4",
     title: "Will Germany's economy recover from 2-year contraction in 2025?",
-    description: "Germany's economy contracted for second consecutive year in 2024. Market predicts economic recovery amid political changes and EU challenges.",
+    description: "Germany faces economic headwinds from energy costs, industrial competitiveness challenges, and demographic shifts, while navigating political transitions and European Union policy coordination efforts.",
     volume: 5100000,
     categories: ["trending", "economy", "world"],
     iconName: "germany-economy.svg",
@@ -55,7 +55,7 @@ export const markets: Market[] = [
   {
     id: "5",
     title: "Will China maintain 77% confidence in AI job creation through 2025?",
-    description: "China leads globally with 77% believing AI will create jobs. Market predicts if this optimism sustains amid global AI developments.",
+    description: "China's technology sector drives significant investment in artificial intelligence research and development, with government policies supporting AI integration across manufacturing, healthcare, and financial services industries.",
     volume: 3300000,
     categories: ["trending", "tech", "world"],
     iconName: "china-ai.svg",
@@ -65,7 +65,7 @@ export const markets: Market[] = [
   {
     id: "6",
     title: "Will personal data leaks increase in 2025?",
-    description: "57% globally expect personal data leaks in 2025. Market predicts cybersecurity incidents amid increasing digital engagement and AI adoption.",
+    description: "Cybersecurity threats evolve with increasing digitalization, cloud adoption, and sophisticated attack vectors targeting personal information across social media, financial services, and healthcare platforms.",
     volume: 2700000,
     categories: ["trending", "tech"],
     iconName: "data-breach.svg",

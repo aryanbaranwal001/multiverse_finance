@@ -65,19 +65,26 @@ const MarketDetailPage = () => {
     
     setLoadingSentiment(true);
     try {
-      const response = await fetch('https://api-inference.huggingface.co/models/meta-llama/Llama-2-7b-chat-hf', {
+      const response = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer sk-bbe0f6dcc0f9487494f96b1c18899a06',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          inputs: `Analyze the market sentiment and provide insights for this prediction market: "${market.title}". Description: ${market.description}. Current probability: ${market.yesPercentage}%. Provide a professional analysis of market trends, factors affecting the outcome, and trading insights in 2-3 sentences.`,
-          parameters: {
-            max_new_tokens: 150,
-            temperature: 0.7,
-            return_full_text: false
-          }
+          model: 'deepseek-chat',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are a professional market analyst specializing in prediction markets. Provide detailed, insightful analysis that is exactly 100-120 words long.'
+            },
+            {
+              role: 'user',
+              content: `Analyze the prediction market: "${market.title}". Current probability: ${market.yesPercentage}%. Provide a comprehensive analysis covering: 1) Key factors influencing this outcome, 2) Market sentiment drivers, 3) Risk assessment, 4) Trading considerations. Be specific and professional, exactly 100-120 words.`
+            }
+          ],
+          max_tokens: 200,
+          temperature: 0.7
         })
       });
 
@@ -87,8 +94,8 @@ const MarketDetailPage = () => {
 
       const data = await response.json();
       
-      if (data && data[0] && data[0].generated_text) {
-        setMarketSentiment(data[0].generated_text.trim());
+      if (data && data.choices && data.choices[0] && data.choices[0].message) {
+        setMarketSentiment(data.choices[0].message.content.trim());
       } else {
         throw new Error('Invalid response format');
       }
@@ -96,9 +103,8 @@ const MarketDetailPage = () => {
       console.error('Error fetching market sentiment:', error);
       // Fallback to mock data if API fails
       const fallbackSentiments = [
-        `Current market sentiment for "${market.title}" shows ${market.yesPercentage}% probability. Recent global surveys indicate mixed opinions with emerging markets showing more optimism than developed nations.`,
-        `Analysis suggests strong correlation with recent geopolitical developments. Market participants are closely watching policy announcements and economic indicators.`,
-        `Technical analysis indicates potential volatility ahead. Trading volume of ${formatVolume(market.volume)} suggests high market interest and liquidity.`
+        `Market analysis for "${market.title}" reveals complex dynamics at ${market.yesPercentage}% probability. Key factors include regulatory developments, technological adoption rates, and geopolitical stability. Current sentiment reflects cautious optimism among institutional traders, while retail investors show mixed positioning. Risk factors include policy uncertainty and external market volatility. Technical indicators suggest potential for significant price movement in either direction. Trading volume of ${formatVolume(market.volume)} indicates strong market interest and adequate liquidity for position adjustments. Recommended approach involves careful position sizing and continuous monitoring of fundamental catalysts that could shift market dynamics substantially.`,
+        `Current market positioning at ${market.yesPercentage}% reflects sophisticated trader analysis of underlying fundamentals. Primary drivers include economic indicators, policy announcements, and sector-specific developments. Market sentiment shows institutional confidence with measured retail participation. Key risks encompass regulatory changes, competitive dynamics, and broader market conditions. The probability distribution suggests efficient price discovery with room for volatility. High trading volume of ${formatVolume(market.volume)} demonstrates robust market engagement and sufficient depth for strategic entries and exits. Traders should focus on catalyst timing, position management, and risk-adjusted returns while maintaining awareness of correlation effects with related markets and external economic factors.`
       ];
       setMarketSentiment(fallbackSentiments[Math.floor(Math.random() * fallbackSentiments.length)]);
     } finally {
@@ -271,8 +277,24 @@ const MarketDetailPage = () => {
                     {loadingSentiment ? 'Analyzing...' : 'Get Market Context'}
                   </button>
                 </div>
-                {marketSentiment && (
-                  <div className={`${theme.textSecondary} leading-relaxed`}>
+                {loadingSentiment && (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="relative">
+                        <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Brain className="w-6 h-6 text-blue-600 animate-pulse" />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-sm font-medium text-blue-600">Analyzing Market Context</p>
+                        <p className="text-xs text-gray-500">Gathering insights from AI...</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {marketSentiment && !loadingSentiment && (
+                  <div className={`${theme.textSecondary} leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-200`}>
                     {marketSentiment}
                   </div>
                 )}
@@ -282,7 +304,7 @@ const MarketDetailPage = () => {
             {/* Right Column - Trading Panel */}
             <div className="space-y-6">
               {/* Trading Buttons */}
-              <div className={`p-6 border-t border-gray-300`}>
+              <div className="p-6 bg-white rounded-lg border border-gray-300">
                 <h3 className="text-xl font-semibold mb-6">Trade</h3>
                 
                 {!showYesBuy && !showNoBuy ? (

@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "@/components/ThemeProvider";
+import ThemeProvider from '@/components/ThemeProvider';
+import { WalletProvider } from '@/providers/WalletProvider';
+import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 
-const inter = Inter({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-inter",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Infi Markets - Distribution Markets Platform",
-  description: "A modern platform for prediction markets and distribution trading",
+  title: "Multiverse Finance",
+  description: "Prediction Markets Platform",
 };
 
 export default function RootLayout({
@@ -20,10 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <WalletProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </WalletProvider>
       </body>
     </html>
   );

@@ -1,0 +1,79 @@
+/* Wallet Selector Theme Overrides */
+
+/* Blue Theme */
+.theme-blue .wallet-button {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.theme-blue .wallet-button:hover {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+}
+
+/* Green Theme */
+.theme-green .wallet-button {
+  background-color: #10b981 !important;
+  border-color: #10b981 !important;
+  color: white !important;
+}
+
+.theme-green .wallet-button:hover {
+  background-color: #059669 !important;
+  border-color: #059669 !important;
+}
+
+/* Purple Theme */
+.theme-purple .wallet-button {
+  background-color: #8b5cf6 !important;
+  border-color: #8b5cf6 !important;
+  color: white !important;
+}
+
+.theme-purple .wallet-button:hover {
+  background-color: #7c3aed !important;
+  border-color: #7c3aed !important;
+}
+
+/* Orange Theme */
+.theme-orange .wallet-button {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.theme-orange .wallet-button:hover {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Pink Theme */
+.theme-pink .wallet-button {
+  background-color: #ec4899 !important;
+  border-color: #ec4899 !important;
+  color: white !important;
+}
+
+.theme-pink .wallet-button:hover {
+  background-color: #db2777 !important;
+  border-color: #db2777 !important;
+}
+
+/* Wallet Modal Theme */
+.wallet-selector-modal {
+  background-color: var(--modal-bg) !important;
+  border: 1px solid var(--modal-border) !important;
+}
+
+.wallet-modal-title {
+  color: var(--text-primary) !important;
+}
+
+.wallet-name-wrapper {
+  color: var(--text-secondary) !important;
+}
+
+.wallet-connect-button:hover {
+  background-color: var(--hover-bg) !important;
+}

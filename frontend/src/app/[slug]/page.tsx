@@ -265,36 +265,29 @@ const MarketDetailPage = () => {
               {/* AI Market Sentiment */}
               <div className={`p-6 border-t border-gray-300`}>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-semibold flex items-center gap-2">
-                    <Brain className="w-5 h-5" />
-                    AI Market Sentiment
-                  </h3>
+                  <h3 className="text-xl font-semibold">Market Context</h3>
                   <button
                     onClick={fetchMarketSentiment}
                     disabled={loadingSentiment}
-                    className={`px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className={`px-4 py-2 ${theme.primaryBg} text-white rounded-lg ${theme.primaryHover} transition-colors disabled:opacity-50 flex items-center gap-2`}
                   >
-                    {loadingSentiment ? 'Analyzing...' : 'Get Market Context'}
+                    {loadingSentiment ? (
+                      <>
+                        <div className="relative">
+                          <div className={`w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin`}></div>
+                        </div>
+                        <span>Analyzing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Brain className="w-4 h-4" />
+                        <span>Get Market Context</span>
+                      </>
+                    )}
                   </button>
                 </div>
-                {loadingSentiment && (
-                  <div className="flex items-center justify-center py-8">
-                    <div className="flex flex-col items-center space-y-4">
-                      <div className="relative">
-                        <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Brain className="w-6 h-6 text-blue-600 animate-pulse" />
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-medium text-blue-600">Analyzing Market Context</p>
-                        <p className="text-xs text-gray-500">Gathering insights from AI...</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
                 {marketSentiment && !loadingSentiment && (
-                  <div className={`${theme.textSecondary} leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-200`}>
+                  <div className={`${theme.text} leading-relaxed p-4 rounded-lg ${theme.cardBg} border ${theme.border}`}>
                     {marketSentiment}
                   </div>
                 )}
@@ -312,13 +305,13 @@ const MarketDetailPage = () => {
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <button
                       onClick={handleYesClick}
-                      className="py-3 px-4 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors text-sm"
+                      className="py-2.5 px-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors text-sm"
                     >
                       Yes
                     </button>
                     <button
                       onClick={handleNoClick}
-                      className="py-3 px-4 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors text-sm"
+                      className="py-2.5 px-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors text-sm"
                     >
                       No
                     </button>

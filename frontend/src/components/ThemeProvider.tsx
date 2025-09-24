@@ -13,8 +13,8 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
   useEffect(() => {
     // Apply theme classes to document body
-    document.body.className = `${theme.background} ${theme.text} transition-colors duration-200`;
-  }, [theme.background, theme.text]);
+    document.body.className = `${theme.background} ${theme.text} theme-${color} transition-colors duration-200`;
+  }, [theme.background, theme.text, color]);
 
   return <>{children}</>;
 };

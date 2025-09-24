@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeProvider from '@/components/ThemeProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
+import "@/styles/wallet.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

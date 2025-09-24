@@ -102,6 +102,36 @@ const Navbar = () => {
                     >
                       Dashboard
                     </Link>
+                    <Link
+                      href="/politics"
+                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                    >
+                      Politics
+                    </Link>
+                    <Link
+                      href="/sports"
+                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                    >
+                      Sports
+                    </Link>
+                    <Link
+                      href="/crypto"
+                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                    >
+                      Crypto
+                    </Link>
+                    <Link
+                      href="/economics"
+                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                    >
+                      Economics
+                    </Link>
+                    <Link
+                      href="/entertainment"
+                      className={`block px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}
+                    >
+                      Entertainment
+                    </Link>
                     <button
                       onClick={nextColor}
                       className={`w-full text-left px-4 py-2 ${theme.textSecondary} hover:${theme.primary} hover:bg-gray-600/10 transition-colors`}

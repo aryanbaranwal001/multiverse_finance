@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type ThemeColor = 'green' | 'orange' | 'coral';
+export type ThemeColor = 'blue' | 'green' | 'purple' | 'orange' | 'pink';
 
 interface ThemeState {
   color: ThemeColor;
@@ -9,7 +9,7 @@ interface ThemeState {
   nextColor: () => void;
 }
 
-const themeColors: ThemeColor[] = ['green', 'orange', 'coral'];
+const themeColors: ThemeColor[] = ['blue', 'green', 'purple', 'orange', 'pink'];
 
 export const useThemeStore = create<ThemeState>()(
   persist(
@@ -41,26 +41,40 @@ export const getThemeClasses = (color: ThemeColor) => {
   };
 
   const colorClasses = {
+    blue: {
+      primary: 'text-[#3b82f6]',
+      primaryBg: 'bg-[#3b82f6]',
+      primaryHover: 'hover:bg-[#2563eb]',
+      border: 'border-[#3b82f6]',
+      accent: 'accent-[#3b82f6]',
+    },
     green: {
-      primary: 'text-[#11b881]',
-      primaryBg: 'bg-[#11b881]',
-      primaryHover: 'hover:bg-[#0f9d6f]',
-      border: 'border-[#11b881]',
-      accent: 'accent-[#11b881]',
+      primary: 'text-[#10b981]',
+      primaryBg: 'bg-[#10b981]',
+      primaryHover: 'hover:bg-[#059669]',
+      border: 'border-[#10b981]',
+      accent: 'accent-[#10b981]',
+    },
+    purple: {
+      primary: 'text-[#8b5cf6]',
+      primaryBg: 'bg-[#8b5cf6]',
+      primaryHover: 'hover:bg-[#7c3aed]',
+      border: 'border-[#8b5cf6]',
+      accent: 'accent-[#8b5cf6]',
     },
     orange: {
-      primary: 'text-[#e59500]',
-      primaryBg: 'bg-[#e59500]',
-      primaryHover: 'hover:bg-[#cc8500]',
-      border: 'border-[#e59500]',
-      accent: 'accent-[#e59500]',
+      primary: 'text-[#f97316]',
+      primaryBg: 'bg-[#f97316]',
+      primaryHover: 'hover:bg-[#ea580c]',
+      border: 'border-[#f97316]',
+      accent: 'accent-[#f97316]',
     },
-    coral: {
-      primary: 'text-[#ef2d56]',
-      primaryBg: 'bg-[#ef2d56]',
-      primaryHover: 'hover:bg-[#d92548]',
-      border: 'border-[#ef2d56]',
-      accent: 'accent-[#ef2d56]',
+    pink: {
+      primary: 'text-[#ec4899]',
+      primaryBg: 'bg-[#ec4899]',
+      primaryHover: 'hover:bg-[#db2777]',
+      border: 'border-[#ec4899]',
+      accent: 'accent-[#ec4899]',
     },
   };
 

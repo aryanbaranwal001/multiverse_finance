@@ -91,46 +91,46 @@ const MarketCard = ({ market }: MarketCardProps) => {
       <div className="mb-4">
         {!showYesBuy && !showNoBuy ? (
           /* Initial Side-by-Side Buttons */
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <button
               onClick={handleYesClick}
-              className="py-3 px-4 bg-emerald-100 text-emerald-800 rounded-lg font-semibold hover:bg-emerald-200 transition-colors border border-emerald-200"
+              className="py-2.5 px-3 bg-green-500 text-white rounded-md font-medium hover:bg-green-600 transition-colors text-sm"
             >
               Yes
             </button>
             <button
               onClick={handleNoClick}
-              className="py-3 px-4 bg-orange-100 text-orange-800 rounded-lg font-semibold hover:bg-orange-200 transition-colors border border-orange-200"
+              className="py-2.5 px-3 bg-red-500 text-white rounded-md font-medium hover:bg-red-600 transition-colors text-sm"
             >
               No
             </button>
           </div>
         ) : (
           /* Expanded Buy Interface */
-          <div className="space-y-4">
+          <div className="space-y-3">
             {showYesBuy && (
-              <div className="bg-emerald-50 rounded-lg border border-emerald-200 p-4">
-                <div className="space-y-4">
+              <div className="bg-gray-900 rounded-lg border border-gray-700 p-4">
+                <div className="space-y-3">
                   {/* Amount Input */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-emerald-800">Amount</label>
+                    <label className="text-sm font-medium text-green-400">Amount</label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-600 font-medium">$</span>
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400 font-medium">$</span>
                       <input
                         type="number"
                         placeholder="10"
                         value={yesAmount}
                         onChange={(e) => setYesAmount(e.target.value)}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full pl-8 pr-4 py-3 bg-white border border-emerald-300 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
+                        className="w-full pl-8 pr-4 py-2.5 bg-gray-800 border border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-white placeholder-gray-400"
                       />
                     </div>
                   </div>
                   
                   {/* Potential Winnings */}
                   {yesAmount && (
-                    <div className="text-sm text-emerald-700">
-                      To win <span className="font-semibold">${(parseFloat(yesAmount) * (100 / (market.yesPercentage || 50)) - parseFloat(yesAmount)).toFixed(2)}</span>
+                    <div className="text-sm text-green-300">
+                      To win <span className="font-semibold text-green-400">${(parseFloat(yesAmount) * (100 / (market.yesPercentage || 50)) - parseFloat(yesAmount)).toFixed(2)}</span>
                     </div>
                   )}
                   
@@ -139,7 +139,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
                     <button
                       onClick={(e) => handleBuy(e, 'yes')}
                       disabled={!yesAmount}
-                      className="flex-1 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 py-2.5 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                     >
                       Buy Yes
                     </button>
@@ -149,7 +149,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
                         setShowYesBuy(false);
                         setYesAmount('');
                       }}
-                      className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                      className="px-3 py-2.5 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600 transition-colors text-sm"
                     >
                       Cancel
                     </button>
@@ -159,28 +159,28 @@ const MarketCard = ({ market }: MarketCardProps) => {
             )}
             
             {showNoBuy && (
-              <div className="bg-orange-50 rounded-lg border border-orange-200 p-4">
-                <div className="space-y-4">
+              <div className="bg-gray-900 rounded-lg border border-gray-700 p-4">
+                <div className="space-y-3">
                   {/* Amount Input */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-orange-800">Amount</label>
+                    <label className="text-sm font-medium text-red-400">Amount</label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-600 font-medium">$</span>
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-400 font-medium">$</span>
                       <input
                         type="number"
                         placeholder="10"
                         value={noAmount}
                         onChange={(e) => setNoAmount(e.target.value)}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full pl-8 pr-4 py-3 bg-white border border-orange-300 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900"
+                        className="w-full pl-8 pr-4 py-2.5 bg-gray-800 border border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-white placeholder-gray-400"
                       />
                     </div>
                   </div>
                   
                   {/* Potential Winnings */}
                   {noAmount && (
-                    <div className="text-sm text-orange-700">
-                      To win <span className="font-semibold">${(parseFloat(noAmount) * (100 / (100 - (market.yesPercentage || 50))) - parseFloat(noAmount)).toFixed(2)}</span>
+                    <div className="text-sm text-red-300">
+                      To win <span className="font-semibold text-red-400">${(parseFloat(noAmount) * (100 / (100 - (market.yesPercentage || 50))) - parseFloat(noAmount)).toFixed(2)}</span>
                     </div>
                   )}
                   
@@ -189,7 +189,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
                     <button
                       onClick={(e) => handleBuy(e, 'no')}
                       disabled={!noAmount}
-                      className="flex-1 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                     >
                       Buy No
                     </button>
@@ -199,7 +199,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
                         setShowNoBuy(false);
                         setNoAmount('');
                       }}
-                      className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                      className="px-3 py-2.5 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600 transition-colors text-sm"
                     >
                       Cancel
                     </button>

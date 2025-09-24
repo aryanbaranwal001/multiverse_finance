@@ -65,17 +65,42 @@ const MarketDetailPage = () => {
     
     setLoadingSentiment(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await fetch('https://api-inference.huggingface.co/models/meta-llama/Llama-2-7b-chat-hf', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer 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',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputs: `Analyze the market sentiment and provide insights for this prediction market: "${market.title}". Description: ${market.description}. Current probability: ${market.yesPercentage}%. Provide a professional analysis of market trends, factors affecting the outcome, and trading insights in 2-3 sentences.`,
+          parameters: {
+            max_new_tokens: 150,
+            temperature: 0.7,
+            return_full_text: false
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
       
-      const sentiments = [
+      if (data && data[0] && data[0].generated_text) {
+        setMarketSentiment(data[0].generated_text.trim());
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (error) {
+      console.error('Error fetching market sentiment:', error);
+      // Fallback to mock data if API fails
+      const fallbackSentiments = [
         `Current market sentiment for "${market.title}" shows ${market.yesPercentage}% probability. Recent global surveys indicate mixed opinions with emerging markets showing more optimism than developed nations.`,
         `Analysis suggests strong correlation with recent geopolitical developments. Market participants are closely watching policy announcements and economic indicators.`,
         `Technical analysis indicates potential volatility ahead. Trading volume of ${formatVolume(market.volume)} suggests high market interest and liquidity.`
       ];
-      
-      setMarketSentiment(sentiments[Math.floor(Math.random() * sentiments.length)]);
-    } catch {
-      setMarketSentiment('Unable to fetch market sentiment at this time. Please try again later.');
+      setMarketSentiment(fallbackSentiments[Math.floor(Math.random() * fallbackSentiments.length)]);
     } finally {
       setLoadingSentiment(false);
     }
@@ -203,9 +228,19 @@ const MarketDetailPage = () => {
                         formatter={(value) => [`${value}%`, 'Probability']}
                         labelFormatter={(label) => `Day ${label}`}
                         contentStyle={{
-                          backgroundColor: '#f8f9fa',
-                          border: '1px solid #e0e0e0',
-                          borderRadius: '8px'
+                          backgroundColor: '#1f2937',
+                          border: '1px solid #374151',
+                          borderRadius: '8px',
+                          color: '#ffffff',
+                          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                        }}
+                        labelStyle={{
+                          color: '#d1d5db',
+                          fontWeight: '500'
+                        }}
+                        itemStyle={{
+                          color: '#22c55e',
+                          fontWeight: '600'
                         }}
                       />
                       <Line 
@@ -231,9 +266,9 @@ const MarketDetailPage = () => {
                   <button
                     onClick={fetchMarketSentiment}
                     disabled={loadingSentiment}
-                    className={`px-4 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300 transition-colors disabled:opacity-50`}
+                    className={`px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
-                    {loadingSentiment ? 'Analyzing...' : 'Get Sentiment'}
+                    {loadingSentiment ? 'Analyzing...' : 'Get Market Context'}
                   </button>
                 </div>
                 {marketSentiment && (
@@ -250,85 +285,142 @@ const MarketDetailPage = () => {
               <div className={`p-6 border-t border-gray-300`}>
                 <h3 className="text-xl font-semibold mb-6">Trade</h3>
                 
-                {/* Yes Button */}
-                <div className="mb-4">
-                  <button
-                    onClick={handleYesClick}
-                    className="w-full py-4 px-6 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-between"
-                  >
-                    <span>Yes ${((market.yesPercentage || 50) / 100).toFixed(2)}</span>
-                    <span>{market.yesPercentage || 50}%</span>
-                  </button>
-                  
-                  {showYesBuy && (
-                    <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-medium text-green-800">Buy Yes</span>
-                        <button
-                          onClick={() => setShowYesBuy(false)}
-                          className="text-green-600 hover:text-green-800"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
+                {!showYesBuy && !showNoBuy ? (
+                  /* Initial Side-by-Side Buttons */
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <button
+                      onClick={handleYesClick}
+                      className="py-3 px-4 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors text-sm"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={handleNoClick}
+                      className="py-3 px-4 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors text-sm"
+                    >
+                      No
+                    </button>
+                  </div>
+                ) : (
+                  /* Expanded Buy Interface */
+                  <div className="space-y-4">
+                    {showYesBuy && (
+                      <div className="bg-gray-900 rounded-lg border border-gray-700 p-4">
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-semibold text-green-400">Buy Yes</h4>
+                            <button
+                              onClick={() => setShowYesBuy(false)}
+                              className="text-gray-400 hover:text-white"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                          
+                          {/* Amount Input */}
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-green-400">Amount</label>
+                            <div className="relative">
+                              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400 font-medium">$</span>
+                              <input
+                                type="number"
+                                placeholder="10"
+                                value={yesAmount}
+                                onChange={(e) => setYesAmount(e.target.value)}
+                                className="w-full pl-8 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-white placeholder-gray-400"
+                              />
+                            </div>
+                          </div>
+                          
+                          {/* Potential Winnings */}
+                          {yesAmount && (
+                            <div className="text-sm text-green-300">
+                              To win <span className="font-semibold text-green-400">${(parseFloat(yesAmount) * (100 / (market.yesPercentage || 50)) - parseFloat(yesAmount)).toFixed(2)}</span>
+                            </div>
+                          )}
+                          
+                          {/* Action Buttons */}
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleBuy('yes')}
+                              disabled={!yesAmount}
+                              className="flex-1 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Buy Yes
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowYesBuy(false);
+                                setYesAmount('');
+                              }}
+                              className="px-4 py-3 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600 transition-colors"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                      <div className="space-y-3">
-                        <input
-                          type="number"
-                          placeholder="Enter amount"
-                          value={yesAmount}
-                          onChange={(e) => setYesAmount(e.target.value)}
-                          className="w-full px-3 py-2 border border-green-300 rounded-lg outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                        <button
-                          onClick={() => handleBuy('yes')}
-                          className="w-full py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                        >
-                          Buy Yes
-                        </button>
+                    )}
+                    
+                    {showNoBuy && (
+                      <div className="bg-gray-900 rounded-lg border border-gray-700 p-4">
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-semibold text-red-400">Buy No</h4>
+                            <button
+                              onClick={() => setShowNoBuy(false)}
+                              className="text-gray-400 hover:text-white"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                          
+                          {/* Amount Input */}
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-red-400">Amount</label>
+                            <div className="relative">
+                              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-400 font-medium">$</span>
+                              <input
+                                type="number"
+                                placeholder="10"
+                                value={noAmount}
+                                onChange={(e) => setNoAmount(e.target.value)}
+                                className="w-full pl-8 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-white placeholder-gray-400"
+                              />
+                            </div>
+                          </div>
+                          
+                          {/* Potential Winnings */}
+                          {noAmount && (
+                            <div className="text-sm text-red-300">
+                              To win <span className="font-semibold text-red-400">${(parseFloat(noAmount) * (100 / (100 - (market.yesPercentage || 50))) - parseFloat(noAmount)).toFixed(2)}</span>
+                            </div>
+                          )}
+                          
+                          {/* Action Buttons */}
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleBuy('no')}
+                              disabled={!noAmount}
+                              className="flex-1 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Buy No
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowNoBuy(false);
+                                setNoAmount('');
+                              }}
+                              className="px-4 py-3 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600 transition-colors"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* No Button */}
-                <div>
-                  <button
-                    onClick={handleNoClick}
-                    className="w-full py-4 px-6 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-between"
-                  >
-                    <span>No ${(1 - (market.yesPercentage || 50) / 100).toFixed(2)}</span>
-                    <span>{100 - (market.yesPercentage || 50)}%</span>
-                  </button>
-                  
-                  {showNoBuy && (
-                    <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-medium text-red-800">Buy No</span>
-                        <button
-                          onClick={() => setShowNoBuy(false)}
-                          className="text-red-600 hover:text-red-800"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                      <div className="space-y-3">
-                        <input
-                          type="number"
-                          placeholder="Enter amount"
-                          value={noAmount}
-                          onChange={(e) => setNoAmount(e.target.value)}
-                          className="w-full px-3 py-2 border border-red-300 rounded-lg outline-none focus:ring-2 focus:ring-red-500"
-                        />
-                        <button
-                          onClick={() => handleBuy('no')}
-                          className="w-full py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
-                        >
-                          Buy No
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Market Info */}

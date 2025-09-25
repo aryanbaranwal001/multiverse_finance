@@ -7,15 +7,15 @@
 
 ## Deployment Information
 - **Admin Account**: `0x8b421ba847e4a8bb1726290fe9928f19290225fb1424f8b18f70116b61138343`
-- **Contract Publish Transaction (Updated)**: `0x852c39a30a81322772a23bcc6f55dc052520988f471a7410b4632b6afe3bb66e`
+- **Contract Publish Transaction (Updated)**: `0x8e9f765ab7bcd3c47555280d92b7e41c7f71a78d9eadda3021a2a91bdbc3cb8b`
 - **Market Initialize Transaction**: `0xcc39cfdbc270c449e94d68fb8957e70077aa9ebf860b53d534275376b15a718f`
-- **Test Purchase Transaction (Updated)**: `0x0477a4527199c5745f9388997efcdeb5a69d5bc70773321f97ac140f0fea3242`
+- **Test Purchase Transaction (Updated)**: `0x8edff0212df335192d42d62d15bf7998ba3423060ee6e2824e17196159096f7b`
 
 ## Explorer Links
 - **Contract**: https://explorer.aptoslabs.com/account/0x8b421ba847e4a8bb1726290fe9928f19290225fb1424f8b18f70116b61138343?network=testnet
-- **Publish Transaction**: https://explorer.aptoslabs.com/txn/0x586bad1845bbd20428a6a49469cf871da7bb9204b43ba46dd3d01acde166160a?network=testnet
+- **Publish Transaction**: https://explorer.aptoslabs.com/txn/0x8e9f765ab7bcd3c47555280d92b7e41c7f71a78d9eadda3021a2a91bdbc3cb8b?network=testnet
 - **Initialize Transaction**: https://explorer.aptoslabs.com/txn/0xcc39cfdbc270c449e94d68fb8957e70077aa9ebf860b53d534275376b15a718f?network=testnet
-- **Test Purchase**: https://explorer.aptoslabs.com/txn/0x2a9a53249250b23ac5d4566f22a439a3638f535e57d9b614fd99fa17765eef3c?network=testnet
+- **Test Purchase**: https://explorer.aptoslabs.com/txn/0x8edff0212df335192d42d62d15bf7998ba3423060ee6e2824e17196159096f7b?network=testnet
 
 ## Token Information
 - **YES Token**: AI Jobs Loss YES Token (AIJL-YES)

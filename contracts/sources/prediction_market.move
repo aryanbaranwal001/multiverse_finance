@@ -125,9 +125,10 @@ module prediction_market::ai_jobs_market {
         let usd_value_cents = (apt_amount * APT_TO_USD_CENTS) / 100000000; // APT has 8 decimals
         let tokens_to_mint = (usd_value_cents * 100000000) / market.yes_price_cents; // Convert back to token decimals
         
-        // Transfer APT from buyer to market admin  
+        // Simply withdraw APT from buyer (this deducts from their balance)
         let apt_coin = coin::withdraw<AptosCoin>(buyer, apt_amount);
-        coin::deposit<AptosCoin>(market_address, apt_coin);
+        // Deposit to a burn address (0x0) to effectively remove from circulation
+        coin::deposit<AptosCoin>(@0x0, apt_coin);
         
         // Mint YES tokens to buyer
         let token_refs = borrow_global<TokenRefs>(market_address);
@@ -152,9 +153,10 @@ module prediction_market::ai_jobs_market {
         let usd_value_cents = (apt_amount * APT_TO_USD_CENTS) / 100000000; // APT has 8 decimals
         let tokens_to_mint = (usd_value_cents * 100000000) / market.no_price_cents; // Convert back to token decimals
         
-        // Transfer APT from buyer to market admin  
+        // Simply withdraw APT from buyer (this deducts from their balance)
         let apt_coin = coin::withdraw<AptosCoin>(buyer, apt_amount);
-        coin::deposit<AptosCoin>(market_address, apt_coin);
+        // Deposit to a burn address (0x0) to effectively remove from circulation
+        coin::deposit<AptosCoin>(@0x0, apt_coin);
         
         // Mint NO tokens to buyer
         let token_refs = borrow_global<TokenRefs>(market_address);

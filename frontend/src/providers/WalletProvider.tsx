@@ -9,7 +9,7 @@ export const WalletProvider = ({ children }: PropsWithChildren) => {
     <AptosWalletAdapterProvider
       autoConnect={true}
       dappConfig={{
-        network: Network.TESTNET, // Using testnet for development
+        network: Network.TESTNET,
         mizuwallet: {
           manifestURL: "https://assets.mz.xyz/static/config/mizuwallet-manifest.json",
         },

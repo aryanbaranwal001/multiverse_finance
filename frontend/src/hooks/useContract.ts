@@ -114,16 +114,76 @@ export const useContract = () => {
       
       return 0;
     } catch (error) {
-      console.error("Error getting APT balance:", error);
+      console.error("Error fetching APT balance:", error);
       return 0;
     }
   };
 
-  return {
-    buyYesTokens,
-    buyNoTokens,
+  const getYesTokenBalance = async () => {
+    if (!account) {
+      return 0;
+    }
+
+    try {
+      // Get account resources and look for fungible stores
+      const resources = await aptos.getAccountResources({
+        accountAddress: account.address
+      });
+      
+      console.log("All account resources:", resources);
+      
+      // Look for primary fungible stores
+      const fungibleStores = resources.filter(resource => 
+        resource.type.includes("0x1::primary_fungible_store::PrimaryStore")
+      );
+      
+      console.log("Fungible stores found:", fungibleStores);
+      
+      // For now, return 0 but log what we find
+      return 0;
+      
+    } catch (error) {
+      console.error("Error fetching YES token balance:", error);
+      return 0;
+    }
+  };
+
+  const getNoTokenBalance = async () => {
+    if (!account) {
+      return 0;
+    }
+
+    try {
+      // Get account resources and look for fungible stores
+      const resources = await aptos.getAccountResources({
+        accountAddress: account.address
+      });
+      
+      console.log("NO token - All account resources:", resources);
+      
+      // Look for primary fungible stores
+      const fungibleStores = resources.filter(resource => 
+        resource.type.includes("0x1::primary_fungible_store::PrimaryStore")
+      );
+      
+      console.log("NO token - Fungible stores found:", fungibleStores);
+      
+      // For now, return 0 but log what we find
+      return 0;
+      
+    } catch (error) {
+      console.error("Error fetching NO token balance:", error);
+      return 0;
+    }
+  };
+
+  return { 
+    buyYesTokens, 
+    buyNoTokens, 
+    getAPTBalance: getAccountAPTBalance, 
+    getYesTokenBalance, 
+    getNoTokenBalance,
     getMarketInfo,
-    getAccountAPTBalance,
     isConnected: !!account,
     account
   };

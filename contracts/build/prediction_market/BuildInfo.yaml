@@ -12,7 +12,7 @@ compiled_package_info:
     std: "0000000000000000000000000000000000000000000000000000000000000001"
     vm: "0000000000000000000000000000000000000000000000000000000000000000"
     vm_reserved: "0000000000000000000000000000000000000000000000000000000000000000"
-  source_digest: 50B4F394D19820A60D5EB083F61F6F262BBDE052EB89F53A4C17DF5E9E7076D3
+  source_digest: 29AD53060E45FF422DAD46D3AA6026C2E376F5F96355D41CCDB8618BB09C8714
   build_flags:
     dev_mode: false
     test_mode: false
@@ -23,9 +23,10 @@ compiled_package_info:
     full_model_generation: true
     install_dir: ~
     force_recompilation: false
-    additional_named_addresses: {}
+    additional_named_addresses:
+      prediction_market: 8b421ba847e4a8bb1726290fe9928f19290225fb1424f8b18f70116b61138343
     fetch_deps_only: false
-    skip_fetch_latest_git_deps: false
+    skip_fetch_latest_git_deps: true
     compiler_config:
       bytecode_version: 7
       known_attributes:

@@ -51,7 +51,7 @@ export const calculateTokensFromAPT = (aptAmount: number, isYesToken: boolean): 
 };
 
 export const formatAPT = (amount: number): string => {
-  return `${amount.toFixed(4)} APT`;
+  return `${amount.toFixed(4)}`;
 };
 
 export const formatUSD = (amount: number): string => {

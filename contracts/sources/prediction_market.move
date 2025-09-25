@@ -5,6 +5,8 @@ module prediction_market::ai_jobs_market {
     use aptos_framework::fungible_asset::{Self, Metadata, FungibleStore};
     use aptos_framework::object::{Self, Object};
     use aptos_framework::primary_fungible_store;
+    use aptos_framework::coin::{Self, Coin};
+    use aptos_framework::aptos_coin::AptosCoin;
     use aptos_framework::timestamp;
 
     // Error codes
@@ -123,9 +125,9 @@ module prediction_market::ai_jobs_market {
         let usd_value_cents = (apt_amount * APT_TO_USD_CENTS) / 100000000; // APT has 8 decimals
         let tokens_to_mint = (usd_value_cents * 100000000) / market.yes_price_cents; // Convert back to token decimals
         
-        // Transfer APT from buyer to market admin
-        let apt_metadata = object::address_to_object<Metadata>(@0x000000000000000000000000000000000000000000000000000000000000000a);
-        primary_fungible_store::transfer(buyer, apt_metadata, market_address, apt_amount);
+        // Transfer APT from buyer to market admin  
+        let apt_coin = coin::withdraw<AptosCoin>(buyer, apt_amount);
+        coin::deposit<AptosCoin>(market_address, apt_coin);
         
         // Mint YES tokens to buyer
         let token_refs = borrow_global<TokenRefs>(market_address);
@@ -150,9 +152,9 @@ module prediction_market::ai_jobs_market {
         let usd_value_cents = (apt_amount * APT_TO_USD_CENTS) / 100000000; // APT has 8 decimals
         let tokens_to_mint = (usd_value_cents * 100000000) / market.no_price_cents; // Convert back to token decimals
         
-        // Transfer APT from buyer to market admin
-        let apt_metadata = object::address_to_object<Metadata>(@0x000000000000000000000000000000000000000000000000000000000000000a);
-        primary_fungible_store::transfer(buyer, apt_metadata, market_address, apt_amount);
+        // Transfer APT from buyer to market admin  
+        let apt_coin = coin::withdraw<AptosCoin>(buyer, apt_amount);
+        coin::deposit<AptosCoin>(market_address, apt_coin);
         
         // Mint NO tokens to buyer
         let token_refs = borrow_global<TokenRefs>(market_address);

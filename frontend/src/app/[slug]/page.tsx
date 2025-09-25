@@ -9,6 +9,7 @@ import { markets, Market } from '@/data/markets';
 import { useThemeStore } from '@/store/themeStore';
 import { getThemeClasses } from '@/store/themeStore';
 import { useContract } from '@/hooks/useContract';
+import { useWalletPersistence } from '@/hooks/useWalletPersistence';
 import { calculateAPTFromUSD, formatAPT } from '@/config/contract';
 import { formatVolume } from '@/data/markets';
 import Navbar from '@/components/Navbar';
@@ -20,15 +21,17 @@ const MarketDetailPage = () => {
   const [market, setMarket] = useState<Market | null>(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [marketSentiment, setMarketSentiment] = useState<string>('');
-  const [loadingSentiment, setLoadingSentiment] = useState(false);
   const [showYesBuy, setShowYesBuy] = useState(false);
   const [showNoBuy, setShowNoBuy] = useState(false);
   const [yesAmount, setYesAmount] = useState('');
   const [noAmount, setNoAmount] = useState('');
-  const [aptBalance, setAptBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingSentiment, setLoadingSentiment] = useState(false);
   
-  const { buyYesTokens, buyNoTokens, getAccountAPTBalance, isConnected } = useContract();
+  const { buyYesTokens, buyNoTokens, isConnected } = useContract();
+  
+  // Enable wallet persistence
+  useWalletPersistence();
   
   const theme = getThemeClasses(color);
 
@@ -60,12 +63,6 @@ const MarketDetailPage = () => {
     }
   }, [params.slug]);
 
-  // Load APT balance when wallet connects
-  useEffect(() => {
-    if (isConnected) {
-      getAccountAPTBalance().then(setAptBalance);
-    }
-  }, [isConnected, getAccountAPTBalance]);
 
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
@@ -147,10 +144,6 @@ const MarketDetailPage = () => {
         await buyNoTokens(usdAmount);
         alert(`Successfully bought NO tokens for $${amount}!`);
       }
-      
-      // Refresh balance
-      const newBalance = await getAccountAPTBalance();
-      setAptBalance(newBalance);
       
       // Reset state
       if (type === 'yes') {
@@ -332,7 +325,7 @@ const MarketDetailPage = () => {
                   <h3 className={`text-xl font-bold ${theme.text}`}>Trade</h3>
                   {isConnected && (
                     <div className={`text-sm ${theme.text} opacity-75`}>
-                      Balance: {formatAPT(aptBalance)} APT
+                      <div>Connected</div>
                     </div>
                   )}
                 </div>
@@ -532,6 +525,9 @@ const MarketDetailPage = () => {
               <div className={`p-6 border-t border-gray-300`}>
                 <h3 className="text-xl font-semibold mb-4">Market Info</h3>
                 <div className="space-y-3">
+                  <div className="text-sm text-gray-400">
+                    Connect your wallet to start trading
+                  </div>
                   <div className="flex justify-between">
                     <span className={theme.textSecondary}>Market ID</span>
                     <span>{market.id}</span>

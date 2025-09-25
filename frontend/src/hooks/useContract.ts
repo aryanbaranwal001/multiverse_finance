@@ -27,12 +27,19 @@ export const useContract = () => {
     };
 
     try {
+      console.log("YES transaction payload:", payload);
+      console.log("APT amount (octas):", aptAmount);
+      console.log("USD amount:", usdAmount);
+      
       // @ts-expect-error - Wallet adapter types issue
       const response = await signAndSubmitTransaction(payload);
+      console.log("Transaction response:", response);
+      
       await aptos.waitForTransaction({ transactionHash: response.hash });
       return response;
     } catch (error) {
       console.error("Error buying YES tokens:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
       throw error;
     }
   };
@@ -54,12 +61,19 @@ export const useContract = () => {
     };
 
     try {
+      console.log("NO transaction payload:", payload);
+      console.log("APT amount (octas):", aptAmount);
+      console.log("USD amount:", usdAmount);
+      
       // @ts-expect-error - Wallet adapter types issue
       const response = await signAndSubmitTransaction(payload);
+      console.log("Transaction response:", response);
+      
       await aptos.waitForTransaction({ transactionHash: response.hash });
       return response;
     } catch (error) {
       console.error("Error buying NO tokens:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
       throw error;
     }
   };

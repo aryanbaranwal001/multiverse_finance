@@ -3,7 +3,7 @@ name = "prediction_market"
 version = "1.0.0"
 
 [addresses]
-prediction_market = "_"
+prediction_market = "0x8b421ba847e4a8bb1726290fe9928f19290225fb1424f8b18f70116b61138343"
 
 [dev-addresses]
 prediction_market = "0x123"

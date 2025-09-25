@@ -28,7 +28,7 @@ module prediction_market::ai_jobs_market {
     // Hardcoded prices in USD cents (to avoid decimals)
     const YES_PRICE_CENTS: u64 = 62; // 62% = $0.62
     const NO_PRICE_CENTS: u64 = 38;  // 38% = $0.38
-    const APT_TO_USD_CENTS: u64 = 1200; // $12.00 per APT in cents
+    const APT_TO_USD_CENTS: u64 = 421; // $4.21 per APT in cents
 
     // Market data structure
     struct Market has key {

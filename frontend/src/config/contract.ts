@@ -16,9 +16,9 @@ export const CONTRACT_CONFIG = {
   
   // Market configuration (matching contract hardcoded values)
   MARKET: {
-    YES_PRICE_CENTS: 62, // APT/USD exchange rate (1 APT = $4.21)
+    YES_PRICE_CENTS: 62, // $0.62
     NO_PRICE_CENTS: 38,  // $0.38
-    APT_TO_USD_CENTS: 421, // $4.21 per APT
+    APT_TO_USD_CENTS: 421, // $4.21 per APT (matching updated contract)
     DECIMALS: 8
   },
   

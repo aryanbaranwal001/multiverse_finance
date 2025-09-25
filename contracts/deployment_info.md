@@ -7,9 +7,9 @@
 
 ## Deployment Information
 - **Admin Account**: `0x8b421ba847e4a8bb1726290fe9928f19290225fb1424f8b18f70116b61138343`
-- **Contract Publish Transaction**: `0x586bad1845bbd20428a6a49469cf871da7bb9204b43ba46dd3d01acde166160a`
+- **Contract Publish Transaction (Updated)**: `0x852c39a30a81322772a23bcc6f55dc052520988f471a7410b4632b6afe3bb66e`
 - **Market Initialize Transaction**: `0xcc39cfdbc270c449e94d68fb8957e70077aa9ebf860b53d534275376b15a718f`
-- **Test Purchase Transaction**: `0x2a9a53249250b23ac5d4566f22a439a3638f535e57d9b614fd99fa17765eef3c`
+- **Test Purchase Transaction (Updated)**: `0x0477a4527199c5745f9388997efcdeb5a69d5bc70773321f97ac140f0fea3242`
 
 ## Explorer Links
 - **Contract**: https://explorer.aptoslabs.com/account/0x8b421ba847e4a8bb1726290fe9928f19290225fb1424f8b18f70116b61138343?network=testnet
@@ -23,7 +23,7 @@
 - **Decimals**: 8
 - **YES Price**: 62 cents ($0.62)
 - **NO Price**: 38 cents ($0.38)
-- **APT to USD Rate**: $12.00 per APT (hardcoded)
+- **APT to USD Rate**: $4.21 per APT (updated)
 
 ## Contract Functions
 1. `initialize_market(admin: &signer)` - Initialize the prediction market

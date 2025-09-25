@@ -422,17 +422,6 @@ const MarketDetailPage = () => {
                               )}
                             </div>
                             
-                            {yesAmount && (
-                              <div className="p-4 bg-green-500/10 rounded-lg border border-green-500/20">
-                                <div className="text-sm text-green-300 mb-1">Potential Profit</div>
-                                <div className="text-2xl font-bold text-green-400">
-                                  ${(parseFloat(yesAmount) * (100 / (market.yesPercentage || 50)) - parseFloat(yesAmount)).toFixed(2)}
-                                </div>
-                                <div className="text-xs text-green-300/70 mt-1">
-                                  Current odds: {market.yesPercentage || 50}%
-                                </div>
-                              </div>
-                            )}
                             
                             <div className="flex gap-3 pt-2">
                               <button
@@ -499,17 +488,6 @@ const MarketDetailPage = () => {
                               )}
                             </div>
                             
-                            {noAmount && (
-                              <div className="p-4 bg-red-500/10 rounded-lg border border-red-500/20">
-                                <div className="text-sm text-red-300 mb-1">Potential Profit</div>
-                                <div className="text-2xl font-bold text-red-400">
-                                  ${(parseFloat(noAmount) * (100 / (100 - (market.yesPercentage || 50))) - parseFloat(noAmount)).toFixed(2)}
-                                </div>
-                                <div className="text-xs text-red-300/70 mt-1">
-                                  Current odds: {100 - (market.yesPercentage || 50)}%
-                                </div>
-                              </div>
-                            )}
                             
                             <div className="flex gap-3 pt-2">
                               <button

@@ -412,6 +412,8 @@ const MarketDetailPage = () => {
                                   placeholder="100"
                                   value={yesAmount}
                                   onChange={(e) => setYesAmount(e.target.value)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  onFocus={(e) => e.stopPropagation()}
                                   className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-green-500/30 rounded-lg outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 text-white placeholder-gray-400 font-medium"
                                 />
                               </div>
@@ -478,6 +480,8 @@ const MarketDetailPage = () => {
                                   placeholder="100"
                                   value={noAmount}
                                   onChange={(e) => setNoAmount(e.target.value)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  onFocus={(e) => e.stopPropagation()}
                                   className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-red-500/30 rounded-lg outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 text-white placeholder-gray-400 font-medium"
                                 />
                               </div>

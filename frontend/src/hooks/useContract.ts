@@ -1,4 +1,4 @@
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { useWallet, type InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { CONTRACT_CONFIG } from "@/config/contract";
 
@@ -18,21 +18,22 @@ export const useContract = () => {
     // Convert USD to APT (multiply by 100000000 for 8 decimals)
     const aptAmount = Math.floor((usdAmount / (CONTRACT_CONFIG.MARKET.APT_TO_USD_CENTS / 100)) * 100000000);
 
-    const payload = {
-      function: `${CONTRACT_CONFIG.MODULE_ADDRESS}::${CONTRACT_CONFIG.MODULE_NAME}::${CONTRACT_CONFIG.FUNCTIONS.BUY_YES_TOKENS}`,
-      functionArguments: [
-        CONTRACT_CONFIG.MODULE_ADDRESS, // market_address
-        aptAmount // apt_amount in octas (as number, not string)
-      ],
-    };
-
     try {
-      console.log("YES transaction payload:", payload);
       console.log("APT amount (octas):", aptAmount);
       console.log("USD amount:", usdAmount);
       
-      // @ts-expect-error - Wallet adapter types issue
-      const response = await signAndSubmitTransaction(payload);
+      // Use the wallet's signAndSubmitTransaction with correct payload format
+      const transaction: InputTransactionData = {
+        data: {
+          function: `${CONTRACT_CONFIG.MODULE_ADDRESS}::${CONTRACT_CONFIG.MODULE_NAME}::${CONTRACT_CONFIG.FUNCTIONS.BUY_YES_TOKENS}`,
+          functionArguments: [
+            CONTRACT_CONFIG.MODULE_ADDRESS, // market_address
+            aptAmount.toString() // apt_amount in octas (as string)
+          ],
+        },
+      };
+      
+      const response = await signAndSubmitTransaction(transaction);
       console.log("Transaction response:", response);
       
       await aptos.waitForTransaction({ transactionHash: response.hash });
@@ -52,21 +53,22 @@ export const useContract = () => {
     // Convert USD to APT (multiply by 100000000 for 8 decimals)
     const aptAmount = Math.floor((usdAmount / (CONTRACT_CONFIG.MARKET.APT_TO_USD_CENTS / 100)) * 100000000);
 
-    const payload = {
-      function: `${CONTRACT_CONFIG.MODULE_ADDRESS}::${CONTRACT_CONFIG.MODULE_NAME}::${CONTRACT_CONFIG.FUNCTIONS.BUY_NO_TOKENS}`,
-      functionArguments: [
-        CONTRACT_CONFIG.MODULE_ADDRESS, // market_address
-        aptAmount // apt_amount in octas (as number, not string)
-      ],
-    };
-
     try {
-      console.log("NO transaction payload:", payload);
       console.log("APT amount (octas):", aptAmount);
       console.log("USD amount:", usdAmount);
       
-      // @ts-expect-error - Wallet adapter types issue
-      const response = await signAndSubmitTransaction(payload);
+      // Use the wallet's signAndSubmitTransaction with correct payload format
+      const transaction: InputTransactionData = {
+        data: {
+          function: `${CONTRACT_CONFIG.MODULE_ADDRESS}::${CONTRACT_CONFIG.MODULE_NAME}::${CONTRACT_CONFIG.FUNCTIONS.BUY_NO_TOKENS}`,
+          functionArguments: [
+            CONTRACT_CONFIG.MODULE_ADDRESS, // market_address
+            aptAmount.toString() // apt_amount in octas (as string)
+          ],
+        },
+      };
+      
+      const response = await signAndSubmitTransaction(transaction);
       console.log("Transaction response:", response);
       
       await aptos.waitForTransaction({ transactionHash: response.hash });

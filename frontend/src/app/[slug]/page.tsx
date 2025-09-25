@@ -1,12 +1,16 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Bookmark, Brain, X } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { ArrowLeft, Bookmark, X, Brain } from 'lucide-react';
 import Link from 'next/link';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { useThemeStore, getThemeClasses } from '@/store/themeStore';
-import { markets, Market, formatVolume } from '@/data/markets';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts';
+import { markets, Market } from '@/data/markets';
+import { useThemeStore } from '@/store/themeStore';
+import { getThemeClasses } from '@/store/themeStore';
+import { useContract } from '@/hooks/useContract';
+import { calculateAPTFromUSD, formatAPT } from '@/config/contract';
+import { formatVolume } from '@/data/markets';
 import Navbar from '@/components/Navbar';
 import CategoryNav from '@/components/CategoryNav';
 
@@ -21,6 +25,10 @@ const MarketDetailPage = () => {
   const [showNoBuy, setShowNoBuy] = useState(false);
   const [yesAmount, setYesAmount] = useState('');
   const [noAmount, setNoAmount] = useState('');
+  const [aptBalance, setAptBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { buyYesTokens, buyNoTokens, getAccountAPTBalance, isConnected } = useContract();
   
   const theme = getThemeClasses(color);
 
@@ -42,19 +50,22 @@ const MarketDetailPage = () => {
   };
 
   useEffect(() => {
-    if (params.slug) {
-      // Find market by matching slug with title
-      const foundMarket = markets.find(m => {
-        const slug = m.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        return slug === params.slug;
-      });
-      
+    const slug = params.slug as string;
+    if (slug) {
+      const foundMarket = markets.find(m => m.id === slug);
       if (foundMarket) {
         setMarket(foundMarket);
         setIsBookmarked(foundMarket.isBookmarked || false);
       }
     }
   }, [params.slug]);
+
+  // Load APT balance when wallet connects
+  useEffect(() => {
+    if (isConnected) {
+      getAccountAPTBalance().then(setAptBalance);
+    }
+  }, [isConnected, getAccountAPTBalance]);
 
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
@@ -122,19 +133,38 @@ const MarketDetailPage = () => {
     setShowYesBuy(false);
   };
 
-  const handleBuy = (type: 'yes' | 'no') => {
+  const handleBuy = async (type: 'yes' | 'no') => {
     const amount = type === 'yes' ? yesAmount : noAmount;
-    if (!amount || !market) return;
+    if (!amount || !market || !isConnected) return;
     
-    alert(`Placed ${type.toUpperCase()} order for $${amount} on "${market.title}"`);
-    
-    // Reset state
-    if (type === 'yes') {
-      setYesAmount('');
-      setShowYesBuy(false);
-    } else {
-      setNoAmount('');
-      setShowNoBuy(false);
+    setIsLoading(true);
+    try {
+      const usdAmount = parseFloat(amount);
+      if (type === 'yes') {
+        await buyYesTokens(usdAmount);
+        alert(`Successfully bought YES tokens for $${amount}!`);
+      } else {
+        await buyNoTokens(usdAmount);
+        alert(`Successfully bought NO tokens for $${amount}!`);
+      }
+      
+      // Refresh balance
+      const newBalance = await getAccountAPTBalance();
+      setAptBalance(newBalance);
+      
+      // Reset state
+      if (type === 'yes') {
+        setYesAmount('');
+        setShowYesBuy(false);
+      } else {
+        setNoAmount('');
+        setShowNoBuy(false);
+      }
+    } catch (error) {
+      console.error('Transaction failed:', error);
+      alert('Transaction failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -298,7 +328,14 @@ const MarketDetailPage = () => {
             <div className="space-y-6">
               {/* Trading Panel */}
               <div className={`p-6 ${theme.cardBg} rounded-xl  ${theme.border} shadow-sm`}>
-                <h3 className={`text-xl font-bold mb-6 ${theme.text}`}>Trade</h3>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className={`text-xl font-bold ${theme.text}`}>Trade</h3>
+                  {isConnected && (
+                    <div className={`text-sm ${theme.text} opacity-75`}>
+                      Balance: {formatAPT(aptBalance)} APT
+                    </div>
+                  )}
+                </div>
                 
                 <div className="space-y-4">
                   {/* Market Odds Display */}
@@ -331,58 +368,68 @@ const MarketDetailPage = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <button
                         onClick={handleYesClick}
-                        className="group relative py-4 px-6 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        className="group py-4 px-6 bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 hover:border-green-500/50 text-green-400 hover:text-green-300 rounded-lg font-semibold transition-all duration-200"
                       >
                         <div className="flex items-center justify-center gap-2">
                           <span>Buy Yes</span>
+                          <span className="text-xs opacity-70">{market.yesPercentage || 50}%</span>
                         </div>
                       </button>
                       
                       <button
                         onClick={handleNoClick}
-                        className="group relative py-4 px-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        className="group py-4 px-6 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 text-red-400 hover:text-red-300 rounded-lg font-semibold transition-all duration-200"
                       >
                         <div className="flex items-center justify-center gap-2">
                           <span>Buy No</span>
+                          <span className="text-xs opacity-70">{100 - (market.yesPercentage || 50)}%</span>
                         </div>
                       </button>
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {showYesBuy && (
-                        <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-xl border-2 border-green-200 dark:border-green-700 p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <h4 className="text-xl font-bold text-green-700 dark:text-green-300">Buy Yes Shares</h4>
+                        <div className="bg-green-500/5 rounded-xl p-6 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-xl font-semibold text-green-400">Buy Yes Shares</h4>
                             <button
                               onClick={() => setShowYesBuy(false)}
-                              className="p-2 hover:bg-green-200 dark:hover:bg-green-800 rounded-lg transition-colors"
+                              className="p-2 hover:bg-green-500/10 rounded-lg transition-colors"
                             >
-                              <X className="w-5 h-5 text-green-600 dark:text-green-400" />
+                              <X className="w-5 h-5 text-green-400" />
                             </button>
                           </div>
                           
                           <div className="space-y-4">
                             <div>
-                              <label className="block text-sm font-semibold text-green-700 dark:text-green-300 mb-2">
-                                Investment Amount
+                              <label className="block text-sm font-medium text-green-300 mb-2">
+                                Investment Amount (USD)
                               </label>
                               <div className="relative">
-                                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 dark:text-green-400 font-bold text-lg">$</span>
+                                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-400 font-semibold">$</span>
                                 <input
                                   type="number"
                                   placeholder="100"
                                   value={yesAmount}
                                   onChange={(e) => setYesAmount(e.target.value)}
-                                  className="w-full pl-10 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-green-300 dark:border-green-600 rounded-xl outline-none focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 focus:border-green-500 text-lg font-semibold text-gray-900 dark:text-white placeholder-green-400"
+                                  className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-green-500/30 rounded-lg outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 text-white placeholder-gray-400 font-medium"
                                 />
                               </div>
+                              {yesAmount && (
+                                <div className="mt-2 text-sm text-green-300">
+                                  ≈ {formatAPT(calculateAPTFromUSD(parseFloat(yesAmount)))} APT
+                                </div>
+                              )}
                             </div>
                             
                             {yesAmount && (
-                              <div className="p-4 bg-green-100 dark:bg-green-800/50 rounded-lg border border-green-200 dark:border-green-700">
-                                <div className="text-sm text-green-700 dark:text-green-300 mb-1">Potential Profit</div>
-                                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                              <div className="p-4 bg-green-500/10 rounded-lg border border-green-500/20">
+                                <div className="text-sm text-green-300 mb-1">Potential Profit</div>
+                                <div className="text-2xl font-bold text-green-400">
                                   ${(parseFloat(yesAmount) * (100 / (market.yesPercentage || 50)) - parseFloat(yesAmount)).toFixed(2)}
+                                </div>
+                                <div className="text-xs text-green-300/70 mt-1">
+                                  Current odds: {market.yesPercentage || 50}%
                                 </div>
                               </div>
                             )}
@@ -390,17 +437,26 @@ const MarketDetailPage = () => {
                             <div className="flex gap-3 pt-2">
                               <button
                                 onClick={() => handleBuy('yes')}
-                                disabled={!yesAmount}
-                                className="flex-1 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl font-bold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105"
+                                disabled={!yesAmount || !isConnected || isLoading}
+                                className="flex-1 py-3 px-4 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                               >
-                                Confirm Purchase
+                                {isLoading ? (
+                                  <>
+                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    Processing...
+                                  </>
+                                ) : !isConnected ? (
+                                  'Connect Wallet'
+                                ) : (
+                                  'Confirm Purchase'
+                                )}
                               </button>
                               <button
                                 onClick={() => {
                                   setShowYesBuy(false);
                                   setYesAmount('');
                                 }}
-                                className="px-6 py-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                className="px-4 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg font-medium transition-colors"
                               >
                                 Cancel
                               </button>
@@ -410,39 +466,47 @@ const MarketDetailPage = () => {
                       )}
                       
                       {showNoBuy && (
-                        <div className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 rounded-xl border-2 border-red-200 dark:border-red-700 p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <h4 className="text-xl font-bold text-red-700 dark:text-red-300">Buy No Shares</h4>
+                        <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-6 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-xl font-semibold text-red-400">Buy No Shares</h4>
                             <button
                               onClick={() => setShowNoBuy(false)}
-                              className="p-2 hover:bg-red-200 dark:hover:bg-red-800 rounded-lg transition-colors"
+                              className="p-2 hover:bg-red-500/10 rounded-lg transition-colors"
                             >
-                              <X className="w-5 h-5 text-red-600 dark:text-red-400" />
+                              <X className="w-5 h-5 text-red-400" />
                             </button>
                           </div>
                           
                           <div className="space-y-4">
                             <div>
-                              <label className="block text-sm font-semibold text-red-700 dark:text-red-300 mb-2">
-                                Investment Amount
+                              <label className="block text-sm font-medium text-red-300 mb-2">
+                                Investment Amount (USD)
                               </label>
                               <div className="relative">
-                                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-red-600 dark:text-red-400 font-bold text-lg">$</span>
+                                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-red-400 font-semibold">$</span>
                                 <input
                                   type="number"
                                   placeholder="100"
                                   value={noAmount}
                                   onChange={(e) => setNoAmount(e.target.value)}
-                                  className="w-full pl-10 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-red-300 dark:border-red-600 rounded-xl outline-none focus:ring-4 focus:ring-red-200 dark:focus:ring-red-800 focus:border-red-500 text-lg font-semibold text-gray-900 dark:text-white placeholder-red-400"
+                                  className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-red-500/30 rounded-lg outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 text-white placeholder-gray-400 font-medium"
                                 />
                               </div>
+                              {noAmount && (
+                                <div className="mt-2 text-sm text-red-300">
+                                  ≈ {formatAPT(calculateAPTFromUSD(parseFloat(noAmount)))} APT
+                                </div>
+                              )}
                             </div>
                             
                             {noAmount && (
-                              <div className="p-4 bg-red-100 dark:bg-red-800/50 rounded-lg border border-red-200 dark:border-red-700">
-                                <div className="text-sm text-red-700 dark:text-red-300 mb-1">Potential Profit</div>
-                                <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+                              <div className="p-4 bg-red-500/10 rounded-lg border border-red-500/20">
+                                <div className="text-sm text-red-300 mb-1">Potential Profit</div>
+                                <div className="text-2xl font-bold text-red-400">
                                   ${(parseFloat(noAmount) * (100 / (100 - (market.yesPercentage || 50))) - parseFloat(noAmount)).toFixed(2)}
+                                </div>
+                                <div className="text-xs text-red-300/70 mt-1">
+                                  Current odds: {100 - (market.yesPercentage || 50)}%
                                 </div>
                               </div>
                             )}
@@ -450,17 +514,26 @@ const MarketDetailPage = () => {
                             <div className="flex gap-3 pt-2">
                               <button
                                 onClick={() => handleBuy('no')}
-                                disabled={!noAmount}
-                                className="flex-1 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-xl font-bold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105"
+                                disabled={!noAmount || !isConnected || isLoading}
+                                className="flex-1 py-3 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                               >
-                                Confirm Purchase
+                                {isLoading ? (
+                                  <>
+                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    Processing...
+                                  </>
+                                ) : !isConnected ? (
+                                  'Connect Wallet'
+                                ) : (
+                                  'Confirm Purchase'
+                                )}
                               </button>
                               <button
                                 onClick={() => {
                                   setShowNoBuy(false);
                                   setNoAmount('');
                                 }}
-                                className="px-6 py-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                className="px-4 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg font-medium transition-colors"
                               >
                                 Cancel
                               </button>

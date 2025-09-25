@@ -62,7 +62,7 @@ const MarketCard = ({ market }: MarketCardProps) => {
     <div className={`p-6 rounded-lg border border-gray-300 ${theme.cardBg} hover:shadow-lg transition-all duration-200 group flex flex-col h-full`}>
       {/* Market Title */}
       <div className="mb-3">
-        <Link href={`/${market.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}>
+        <Link href={`/${market.id}`}>
           <h3 className={`text-lg font-semibold ${theme.text} hover:${theme.primary} hover:underline transition-all cursor-pointer`}>
             {market.title}
           </h3>
@@ -94,13 +94,13 @@ const MarketCard = ({ market }: MarketCardProps) => {
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={handleYesClick}
-              className="py-2.5 px-3 bg-green-600/80 text-white rounded-md font-medium hover:bg-green-600 transition-colors text-sm border border-green-500/30"
+              className="py-2.5 px-3 bg-green-500 text-white rounded-md font-medium hover:bg-green-600 transition-colors text-sm"
             >
               Yes
             </button>
             <button
               onClick={handleNoClick}
-              className="py-2.5 px-3 bg-red-600/80 text-white rounded-md font-medium hover:bg-red-600 transition-colors text-sm border border-red-500/30"
+              className="py-2.5 px-3 bg-red-500 text-white rounded-md font-medium hover:bg-red-600 transition-colors text-sm"
             >
               No
             </button>
